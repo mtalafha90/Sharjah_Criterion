@@ -1,0 +1,44 @@
+{
+  "files": {
+    "positive_csv": "Table_I_positive_observations.csv",
+    "negative_csv": "Table_II_negative_observations.csv",
+    "stage1_output_csv": "alrefay_stage1_rowwise_comparison.csv",
+    "stage2_output_csv": "alrefay_stage2_rowwise_comparison.csv"
+  },
+  "dataset_sizes": {
+    "positive_rows_raw": 277,
+    "negative_rows_raw": 189,
+    "stage1_rows_used": 425,
+    "stage2_rows_used": 265
+  },
+  "stage1_detectability": {
+    "accuracy": 0.8941176470588236,
+    "difference_rate": 0.10588235294117643,
+    "confusion_matrix": [
+      [
+        160,
+        0
+      ],
+      [
+        45,
+        220
+      ]
+    ],
+    "classification_report": "              precision    recall  f1-score   support\n\n           0      0.780     1.000     0.877       160\n           1      1.000     0.830     0.907       265\n\n    accuracy                          0.894       425\n   macro avg      0.890     0.915     0.892       425\nweighted avg      0.917     0.894     0.896       425\n"
+  },
+  "stage2_aided_vs_naked_eye": {
+    "accuracy": 0.879245283018868,
+    "difference_rate": 0.12075471698113205,
+    "confusion_matrix": [
+      [
+        50,
+        29
+      ],
+      [
+        3,
+        183
+      ]
+    ],
+    "classification_report": "              precision    recall  f1-score   support\n\n           0      0.943     0.633     0.758        79\n           1      0.863     0.984     0.920       186\n\n    accuracy                          0.879       265\n   macro avg      0.903     0.808     0.839       265\nweighted avg      0.887     0.879     0.871       265\n"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "feature_cols": [
+    "relative_altitude_deg",
+    "elongation_deg",
+    "moon_lag_minutes"
+  ],
+  "stage1_model": "stage1_detectability_model.joblib",
+  "stage2_model": "stage2_naked_eye_model.joblib",
+  "thresholds": {
+    "pdet_not_detectable": 0.3,
+    "pdet_detectable": 0.5,
+    "peye_optical_aid": 0.3,
+    "peye_naked_eye": 0.6
+  }
+}

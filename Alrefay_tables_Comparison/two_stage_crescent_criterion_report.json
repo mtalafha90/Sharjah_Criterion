@@ -1,0 +1,81 @@
+{
+  "rows_used_initial": 4470,
+  "feature_cols": [
+    "relative_altitude_deg",
+    "elongation_deg",
+    "moon_lag_minutes"
+  ],
+  "stage1": {
+    "task": "0 = not seen, 1 = seen by any means",
+    "rows_used": 4470,
+    "class_counts": {
+      "0": 2319,
+      "1": 2151
+    },
+    "score_coefficients": {
+      "intercept": -0.07525653687702916,
+      "relative_altitude_deg": 1.246621144684116,
+      "elongation_deg": 0.9266133640647075,
+      "moon_lag_minutes": 0.1668088962121609
+    },
+    "metrics": {
+      "accuracy": 0.7817531305903399,
+      "roc_auc": 0.8639565440328162,
+      "confusion_matrix": [
+        [
+          466,
+          114
+        ],
+        [
+          130,
+          408
+        ]
+      ],
+      "classification_report_text": "              precision    recall  f1-score   support\n\n           0      0.782     0.803     0.793       580\n           1      0.782     0.758     0.770       538\n\n    accuracy                          0.782      1118\n   macro avg      0.782     0.781     0.781      1118\nweighted avg      0.782     0.782     0.782      1118\n"
+    }
+  },
+  "stage2": {
+    "task": "0 = optical aid/instrument only, 1 = naked eye",
+    "rows_used": 2151,
+    "class_counts": {
+      "0": 505,
+      "1": 1646
+    },
+    "score_coefficients": {
+      "intercept": 2.586867288889021,
+      "relative_altitude_deg": 2.2927706021125758,
+      "elongation_deg": 0.982762208514183,
+      "moon_lag_minutes": 0.18748023899902705
+    },
+    "metrics": {
+      "accuracy": 0.8810408921933085,
+      "roc_auc": 0.9286003236245954,
+      "confusion_matrix": [
+        [
+          84,
+          42
+        ],
+        [
+          22,
+          390
+        ]
+      ],
+      "classification_report_text": "              precision    recall  f1-score   support\n\n           0      0.792     0.667     0.724       126\n           1      0.903     0.947     0.924       412\n\n    accuracy                          0.881       538\n   macro avg      0.848     0.807     0.824       538\nweighted avg      0.877     0.881     0.877       538\n"
+    }
+  },
+  "saved_models": {
+    "feature_cols": [
+      "relative_altitude_deg",
+      "elongation_deg",
+      "moon_lag_minutes"
+    ],
+    "stage1_model": "stage1_detectability_model.joblib",
+    "stage2_model": "stage2_naked_eye_model.joblib",
+    "thresholds": {
+      "pdet_not_detectable": 0.3,
+      "pdet_detectable": 0.5,
+      "peye_optical_aid": 0.3,
+      "peye_naked_eye": 0.6
+    }
+  }
+}
