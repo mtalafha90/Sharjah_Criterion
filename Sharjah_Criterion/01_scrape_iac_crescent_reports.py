@@ -1,9 +1,12 @@
 import re
 import time
+from pathlib import Path
 import requests
 import pandas as pd
 from bs4 import BeautifulSoup
 from urllib.parse import urljoin
+
+_ICOP_DATA_DIR = Path(__file__).parent.parent / "ICOP_Data"
 
 BASE = "https://astronomycenter.net/"
 INDEX_URL = urljoin(BASE, "res.html")
@@ -307,8 +310,9 @@ def main():
             print(f"FAILED {link['url']}: {e}")
 
     df = pd.DataFrame(all_rows)
-    df.to_csv("crescent_observations_raw.csv", index=False, encoding="utf-8-sig")
-    print(f"Saved {len(df)} rows to crescent_observations_raw.csv")
+    out_path = _ICOP_DATA_DIR / "crescent_observations_raw.csv"
+    df.to_csv(out_path, index=False, encoding="utf-8-sig")
+    print(f"Saved {len(df)} rows to {out_path}")
 
 if __name__ == "__main__":
     main()

@@ -12,8 +12,7 @@ from sklearn.metrics import confusion_matrix, classification_report, accuracy_sc
 # ============================================================
 # CONFIG
 # ============================================================
-# Change this folder to where you extracted the Alrefay CSV files
-BASE_DIR = Path(".")
+BASE_DIR = Path(__file__).parent
 
 POSITIVE_CSV = BASE_DIR / "Table_I_positive_observations.csv"
 NEGATIVE_CSV = BASE_DIR / "Table_II_negative_observations.csv"

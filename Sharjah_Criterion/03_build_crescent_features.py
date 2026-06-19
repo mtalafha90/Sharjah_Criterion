@@ -15,9 +15,11 @@ from timezonefinder import TimezoneFinder
 from moon_phases_core import build_daily_report, _sky_coords_at
 
 
-INPUT_CSV = "crescent_observations_clean.csv"
-OUTPUT_CSV = "crescent_features.csv"
-GEOCODE_CACHE_JSON = "geocode_cache.json"
+_ICOP_DATA_DIR = Path(__file__).parent.parent / "ICOP_Data"
+
+INPUT_CSV = _ICOP_DATA_DIR / "crescent_observations_clean.csv"
+OUTPUT_CSV = _ICOP_DATA_DIR / "crescent_features.csv"
+GEOCODE_CACHE_JSON = _ICOP_DATA_DIR / "geocode_cache.json"
 
 TF = TimezoneFinder(in_memory=True)
 
