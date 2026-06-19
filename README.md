@@ -1,4 +1,6 @@
-# Sharjah_Criterion
+# Sharjah Criterion
+
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.20755360.svg)](https://doi.org/10.5281/zenodo.20755360)
 
 A data-driven lunar crescent visibility project built around a **two-step empirical criterion** derived from crescent sighting reports, with supporting comparisons against classical visibility criteria and external validation using the Alrefay observation tables. The repository currently contains three top-level folders: `Sharjah_Criterion`, `ICOP_Data`, and `Alrefay_tables_Comparison`. :contentReference[oaicite:0]{index=0}
 
