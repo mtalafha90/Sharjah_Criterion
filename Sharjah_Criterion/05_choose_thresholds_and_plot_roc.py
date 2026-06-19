@@ -17,9 +17,12 @@ from sklearn.metrics import (
     recall_score,
 )
 
-STAGE1_CSV = "two_stage_stage1_predictions.csv"
-STAGE2_CSV = "two_stage_stage2_predictions.csv"
-OUT_JSON = "chosen_thresholds.json"
+_ICOP_DATA_DIR = Path(__file__).parent.parent / "ICOP_Data"
+_OUT_DIR = Path(__file__).parent
+
+STAGE1_CSV = _ICOP_DATA_DIR / "two_stage_stage1_predictions.csv"
+STAGE2_CSV = _ICOP_DATA_DIR / "two_stage_stage2_predictions.csv"
+OUT_JSON = _ICOP_DATA_DIR / "chosen_thresholds.json"
 
 
 def evaluate_threshold(y_true, p, thr):
@@ -122,11 +125,11 @@ def main():
     auc1, fpr1, tpr1, cand1, df1 = choose_thresholds(y1, p1, "Stage 1: Detectability")
     auc2, fpr2, tpr2, cand2, df2 = choose_thresholds(y2, p2, "Stage 2: Naked-eye")
 
-    plot_roc(fpr1, tpr1, auc1, "ROC — Stage 1 Detectability", "roc_stage1_detectability.png")
-    plot_roc(fpr2, tpr2, auc2, "ROC — Stage 2 Naked-eye", "roc_stage2_naked_eye.png")
+    plot_roc(fpr1, tpr1, auc1, "ROC — Stage 1 Detectability", _OUT_DIR / "roc_stage1_detectability.png")
+    plot_roc(fpr2, tpr2, auc2, "ROC — Stage 2 Naked-eye", _OUT_DIR / "roc_stage2_naked_eye.png")
 
-    plot_f1_curve(df1, "Threshold Curves — Stage 1 Detectability", "thresholds_stage1.png")
-    plot_f1_curve(df2, "Threshold Curves — Stage 2 Naked-eye", "thresholds_stage2.png")
+    plot_f1_curve(df1, "Threshold Curves — Stage 1 Detectability", _OUT_DIR / "thresholds_stage1.png")
+    plot_f1_curve(df2, "Threshold Curves — Stage 2 Naked-eye", _OUT_DIR / "thresholds_stage2.png")
 
     out = {
         "stage1_detectability": cand1,

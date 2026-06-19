@@ -1,11 +1,14 @@
 from __future__ import annotations
 
 import re
+from pathlib import Path
 import pandas as pd
 
-INPUT_CSV = "crescent_observations_raw.csv"
-OUTPUT_CSV = "crescent_observations_clean.csv"
-REJECTED_CSV = "crescent_observations_rejected.csv"
+_ICOP_DATA_DIR = Path(__file__).parent.parent / "ICOP_Data"
+
+INPUT_CSV = _ICOP_DATA_DIR / "crescent_observations_raw.csv"
+OUTPUT_CSV = _ICOP_DATA_DIR / "crescent_observations_clean.csv"
+REJECTED_CSV = _ICOP_DATA_DIR / "crescent_observations_rejected.csv"
 
 
 BOOL_COLS = [
