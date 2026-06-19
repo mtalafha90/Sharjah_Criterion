@@ -1,0 +1,28 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+type: software
+title: "Sharjah Criterion: A Two-Stage Empirical Lunar Crescent Visibility Model"
+version: 1.0.0
+date-released: "2026-06-19"
+authors:
+  - family-names: Talafha
+    given-names: Mohammed
+    email: mtalafha901@gmail.com
+repository-code: "https://github.com/mtalafha90/Sharjah_Criterion"
+abstract: >
+  A data-driven two-stage logistic-regression criterion for lunar crescent
+  visibility, derived from ICOP crescent sighting reports. The pipeline
+  scrapes, cleans, and enriches observations with astronomical features,
+  trains stage-1 (detectability) and stage-2 (naked-eye vs. aided) models,
+  selects operational thresholds, and validates externally against the
+  Alrefay et al. (2018) published tables.
+keywords:
+  - lunar crescent
+  - crescent visibility
+  - Islamic calendar
+  - hilal
+  - logistic regression
+  - astronomical criterion
+  - ICOP
+  - Alrefay
+license: MIT
