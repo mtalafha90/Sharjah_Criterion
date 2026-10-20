@@ -12,19 +12,19 @@
     "stage2_rows_used": 265
   },
   "stage1_detectability": {
-    "accuracy": 0.88,
-    "difference_rate": 0.12,
+    "accuracy": 0.8682352941176471,
+    "difference_rate": 0.1317647058823529,
     "confusion_matrix": [
       [
         160,
         0
       ],
       [
-        51,
-        214
+        56,
+        209
       ]
     ],
-    "classification_report": "              precision    recall  f1-score   support\n\n           0      0.758     1.000     0.863       160\n           1      1.000     0.808     0.894       265\n\n    accuracy                          0.880       425\n   macro avg      0.879     0.904     0.878       425\nweighted avg      0.909     0.880     0.882       425\n"
+    "classification_report": "              precision    recall  f1-score   support\n\n           0      0.741     1.000     0.851       160\n           1      1.000     0.789     0.882       265\n\n    accuracy                          0.868       425\n   macro avg      0.870     0.894     0.866       425\nweighted avg      0.902     0.868     0.870       425\n"
   },
   "stage2_aided_vs_naked_eye": {
     "accuracy": 0.8981132075471698,

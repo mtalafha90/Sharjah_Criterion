@@ -6,7 +6,9 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+from sklearn.calibration import calibration_curve
 from sklearn.metrics import (
+    brier_score_loss,
     roc_curve,
     roc_auc_score,
     precision_recall_curve,
@@ -112,6 +114,22 @@ def plot_f1_curve(df, title, outfile):
     plt.close()
 
 
+def plot_calibration(stages, outfile):
+    """Reliability diagram: observed frequency against mean predicted probability."""
+    plt.figure(figsize=(6, 5))
+    for label, y, p in stages:
+        frac, mean_p = calibration_curve(y, p, n_bins=10, strategy="quantile")
+        plt.plot(mean_p, frac, marker="o", label=f"{label} (Brier = {brier_score_loss(y, p):.3f})")
+    plt.plot([0, 1], [0, 1], linestyle="--", color="grey", label="Perfect calibration")
+    plt.xlabel("Mean predicted probability")
+    plt.ylabel("Observed frequency")
+    plt.title("Calibration of out-of-fold probabilities")
+    plt.legend()
+    plt.tight_layout()
+    plt.savefig(outfile, dpi=160)
+    plt.close()
+
+
 def main():
     s1 = pd.read_csv(STAGE1_CSV)
     s2 = pd.read_csv(STAGE2_CSV)
@@ -130,6 +148,8 @@ def main():
 
     plot_f1_curve(df1, "Threshold Curves — Stage 1 Detectability", _OUT_DIR / "thresholds_stage1.png")
     plot_f1_curve(df2, "Threshold Curves — Stage 2 Naked-eye", _OUT_DIR / "thresholds_stage2.png")
+    plot_calibration([("Stage 1: detectability", y1, p1), ("Stage 2: naked eye", y2, p2)],
+                     _OUT_DIR / "calibration_two_stage.png")
 
     out = {
         "stage1_detectability": cand1,
@@ -142,6 +162,7 @@ def main():
     print("  roc_stage2_naked_eye.png")
     print("  thresholds_stage1.png")
     print("  thresholds_stage2.png")
+    print("  calibration_two_stage.png")
     print("  chosen_thresholds.json")
 
 

@@ -1,10 +1,12 @@
 {
   "rows_used_initial": 4470,
+  "lunations": 202,
   "feature_cols": [
     "relative_altitude_deg",
     "elongation_deg",
     "moon_lag_minutes"
   ],
+  "evaluation": "5-fold cross-validation grouped by lunation (ICOP report page), stratified on the three-class label, random_state=42",
   "stage1": {
     "task": "0 = not seen, 1 = seen by any means",
     "rows_used": 4470,
@@ -13,25 +15,26 @@
       "1": 2151
     },
     "score_coefficients": {
-      "intercept": -0.08996708549206651,
-      "relative_altitude_deg": 0.5842894267073173,
-      "elongation_deg": 0.8516297780510597,
-      "moon_lag_minutes": 0.7635504361624936
+      "intercept": -0.08942048619787905,
+      "relative_altitude_deg": 0.462084059727099,
+      "elongation_deg": 0.8009833943076041,
+      "moon_lag_minutes": 0.9098578570059158
     },
     "metrics": {
-      "accuracy": 0.7871198568872988,
-      "roc_auc": 0.8683598256633765,
+      "accuracy": 0.7939597315436242,
+      "roc_auc": 0.8772029375909278,
+      "majority_class_accuracy": 0.5187919463087248,
       "confusion_matrix": [
         [
-          470,
-          110
+          1890,
+          429
         ],
         [
-          128,
-          410
+          492,
+          1659
         ]
       ],
-      "classification_report_text": "              precision    recall  f1-score   support\n\n           0      0.786     0.810     0.798       580\n           1      0.788     0.762     0.775       538\n\n    accuracy                          0.787      1118\n   macro avg      0.787     0.786     0.787      1118\nweighted avg      0.787     0.787     0.787      1118\n"
+      "classification_report_text": "              precision    recall  f1-score   support\n\n           0      0.793     0.815     0.804      2319\n           1      0.795     0.771     0.783      2151\n\n    accuracy                          0.794      4470\n   macro avg      0.794     0.793     0.793      4470\nweighted avg      0.794     0.794     0.794      4470\n"
     }
   },
   "stage2": {
@@ -42,25 +45,64 @@
       "1": 1646
     },
     "score_coefficients": {
-      "intercept": 2.6528013711266265,
-      "relative_altitude_deg": 1.5852151345033492,
-      "elongation_deg": 0.883862159645245,
-      "moon_lag_minutes": 1.0040350964775724
+      "intercept": 2.6877330106896107,
+      "relative_altitude_deg": 1.674311505378044,
+      "elongation_deg": 0.9114619107635995,
+      "moon_lag_minutes": 0.9648270704360471
     },
     "metrics": {
-      "accuracy": 0.8903345724907064,
-      "roc_auc": 0.9295057019571582,
+      "accuracy": 0.895862389586239,
+      "roc_auc": 0.9273907342131542,
+      "majority_class_accuracy": 0.7652254765225477,
       "confusion_matrix": [
         [
-          89,
-          37
+          371,
+          134
         ],
         [
-          22,
-          390
+          90,
+          1556
         ]
       ],
-      "classification_report_text": "              precision    recall  f1-score   support\n\n           0      0.802     0.706     0.751       126\n           1      0.913     0.947     0.930       412\n\n    accuracy                          0.890       538\n   macro avg      0.858     0.826     0.840       538\nweighted avg      0.887     0.890     0.888       538\n"
+      "classification_report_text": "              precision    recall  f1-score   support\n\n           0      0.805     0.735     0.768       505\n           1      0.921     0.945     0.933      1646\n\n    accuracy                          0.896      2151\n   macro avg      0.863     0.840     0.850      2151\nweighted avg      0.893     0.896     0.894      2151\n"
+    }
+  },
+  "repeated_cv": {
+    "grouped_by_lunation": {
+      "stage1_accuracy": {
+        "mean": 0.7948993288590605,
+        "sd": 0.0006818272602930864
+      },
+      "stage1_auc": {
+        "mean": 0.8770994928199103,
+        "sd": 0.0002507092546474475
+      },
+      "stage2_accuracy": {
+        "mean": 0.897257089725709,
+        "sd": 0.0010510351748218253
+      },
+      "stage2_auc": {
+        "mean": 0.9276308602913754,
+        "sd": 0.00045749360547480235
+      }
+    },
+    "ungrouped": {
+      "stage1_accuracy": {
+        "mean": 0.7955704697986578,
+        "sd": 0.0008619348710991764
+      },
+      "stage1_auc": {
+        "mean": 0.8773811492754154,
+        "sd": 0.00020718342631294593
+      },
+      "stage2_accuracy": {
+        "mean": 0.8980009298000929,
+        "sd": 0.0009602934067769955
+      },
+      "stage2_auc": {
+        "mean": 0.9277279453340231,
+        "sd": 0.00045837269794714937
+      }
     }
   },
   "saved_models": {
