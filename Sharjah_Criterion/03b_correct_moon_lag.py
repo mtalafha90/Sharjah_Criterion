@@ -3,14 +3,14 @@
 The daily report used by 03_build_crescent_features.py returned the next
 day's moonset when the Moon had already set before sunset, giving lags of
 about 1,400-1,500 min instead of negative values, and returned no moonset
-for some evenings with the Moon above the horizon. This script recomputes
+for some evenings (mostly with the Moon above the horizon). This script recomputes
 the moonset with PyEphem (topocentric, upper limb, standard refraction) for
 those rows only:
   - Moon below the horizon at sunset: the moonset preceding sunset (lag < 0);
   - otherwise: the first moonset after sunset (lag > 0).
 As in the original table, the moonset is rounded down to the whole minute and
 the lag is moonset minus the stored sunset_local. On rows that were already
-correct, PyEphem agrees with the stored lag to within about 1 min.
+correct, PyEphem agrees with the stored lag to within 2 min (mean 0.6 min).
 All other values in the file are left byte-for-byte unchanged.
 """
 from __future__ import annotations

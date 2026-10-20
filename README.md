@@ -12,6 +12,7 @@ Sharjah_Criterion/
 │   ├── 01_scrape_iac_crescent_reports.py
 │   ├── 02_clean_crescent_observations.py
 │   ├── 03_build_crescent_features.py
+│   ├── 03b_correct_moon_lag.py
 │   ├── 04_train_two_stage_crescent_criterion.py
 │   └── 05_choose_thresholds_and_plot_roc.py
 ├── ICOP_Data/                       # Raw and processed observation data
@@ -39,8 +40,8 @@ Sharjah_Criterion/
 The workflow follows five sequential steps:
 
 1. **Scrape** — collect crescent sighting reports from the ICOP archive at [astronomycenter.net](https://astronomycenter.net)
-2. **Clean** — normalize text, booleans, and dates; assign empirical visibility class (0 = not seen, 1 = aided, 2 = naked eye); reject invalid rows
-3. **Build features** — geocode observer locations, compute sunset/moonset times, and derive astronomical parameters (ARCV, ARCL, moon lag, elongation, illumination, Yallop *q*, etc.) using the `ephem` / `skyfield` stack
+2. **Clean** — normalise text, booleans, and dates; assign empirical visibility class (0 = not seen, 1 = aided, 2 = naked eye); reject invalid rows
+3. **Build features** — geocode observer locations, compute sunset/moonset times, and derive astronomical parameters (ARCV, ARCL, moon lag, elongation, illumination, Yallop *q*, etc.) using the `ephem` / `skyfield` stack; then `03b_correct_moon_lag.py` recomputes the moon lag where the Moon had already set at sunset (negative lag) or no moonset was found
 4. **Train** — fit two binary logistic-regression pipelines on 4 470 first-crescent observations:
    - **Stage 1** — detectability (seen by any means vs. not seen)
    - **Stage 2** — naked-eye vs. optical aid (applied only to observations in stage 1 positive class)
@@ -54,36 +55,25 @@ External validation runs the saved models against the Alrefay et al. (2018) tabl
 
 | Stage | Task | Accuracy | ROC AUC |
 |---|---|---|---|
-| Stage 1 | Detectability (seen vs. not seen) | 78.2 % | 0.864 |
-| Stage 2 | Naked-eye vs. aided | 88.1 % | 0.929 |
+| Stage 1 | Detectability (seen vs. not seen) | 78.7 % | 0.868 |
+| Stage 2 | Naked-eye vs. aided | 89.0 % | 0.930 |
 
 ### External validation — Alrefay et al. (2018) tables
 
 | Stage | Rows | Accuracy |
 |---|---|---|
-| Stage 1 — detectability | 425 | 89.4 % |
-| Stage 2 — naked-eye vs. aided | 265 | 87.9 % |
-
-### Comparison with classical criteria (Alrefay tables, detectability task, *n* = 302)
-
-| Criterion | Accuracy |
-|---|---|
-| Alrefay Two-Boundary | 98.7 % |
-| Alrefay Unaided | 97.7 % |
-| **This work — Stage 1** | **93.0 %** |
-| Indian | 92.1 % |
-| Maunder | 90.4 % |
-| Fotheringham | 85.8 % |
+| Stage 1 — detectability | 425 | 88.0 % |
+| Stage 2 — naked-eye vs. aided | 265 | 89.8 % |
 
 ## Features used
 
-Three astronomical parameters derived at the time of best observation opportunity after sunset:
+Three astronomical parameters, all evaluated at local sunset:
 
 | Feature | Description |
 |---|---|
 | `relative_altitude_deg` | Moon altitude above the horizon relative to the Sun (ARCV) |
 | `elongation_deg` | Moon–Sun angular separation (ARCL) |
-| `moon_lag_minutes` | Time between sunset and moonset |
+| `moon_lag_minutes` | Time between sunset and moonset (negative if the Moon had already set) |
 
 ## Usage
 
@@ -98,6 +88,9 @@ python Sharjah_Criterion/02_clean_crescent_observations.py
 
 # 3. Build astronomical features (slow — geocoding + ephemeris)
 python Sharjah_Criterion/03_build_crescent_features.py
+
+# 3b. Correct the moon lag where the Moon had set before sunset or no moonset was found (requires ephem)
+python Sharjah_Criterion/03b_correct_moon_lag.py
 
 # 4. Train two-stage model
 python Sharjah_Criterion/04_train_two_stage_crescent_criterion.py
