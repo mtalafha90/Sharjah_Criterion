@@ -144,8 +144,9 @@ def main():
 
     meta = {
         "feature_cols": feature_cols,
-        "stage1_model": STAGE1_MODEL_JOBLIB,
-        "stage2_model": STAGE2_MODEL_JOBLIB,
+        # File names, relative to the folder of the metadata file.
+        "stage1_model": STAGE1_MODEL_JOBLIB.name,
+        "stage2_model": STAGE2_MODEL_JOBLIB.name,
         "thresholds": {
             "pdet_not_detectable": 0.30,
             "pdet_detectable": 0.50,

@@ -62,8 +62,8 @@ def require_columns(df: pd.DataFrame, required: list[str], label: str):
 def load_models():
     meta = json.loads(MODEL_META_JSON.read_text(encoding="utf-8"))
 
-    stage1_path = Path(meta.get("stage1_model", str(STAGE1_MODEL_JOBLIB)))
-    stage2_path = Path(meta.get("stage2_model", str(STAGE2_MODEL_JOBLIB)))
+    stage1_path = BASE_DIR / meta.get("stage1_model", STAGE1_MODEL_JOBLIB.name)
+    stage2_path = BASE_DIR / meta.get("stage2_model", STAGE2_MODEL_JOBLIB.name)
 
     stage1 = joblib.load(stage1_path)
     stage2 = joblib.load(stage2_path)
@@ -73,6 +73,10 @@ def load_models():
         clf = model.named_steps.get("clf") if hasattr(model, "named_steps") else None
         if clf is not None and not hasattr(clf, "multi_class"):
             clf.multi_class = "ovr"
+        # Models pickled with older scikit-learn lack the imputer's _fill_dtype.
+        imputer = model.named_steps.get("imputer") if hasattr(model, "named_steps") else None
+        if imputer is not None and not hasattr(imputer, "_fill_dtype"):
+            imputer._fill_dtype = imputer._fit_dtype
 
     feature_cols = meta.get(
         "feature_cols",
@@ -289,14 +293,31 @@ def main():
     stage2_df.to_csv(OUT_STAGE2_CSV, index=False)
 
     # =========================
+    # Combined naked-eye rule: P_det >= 0.50 and P_eye >= 0.60
+    # =========================
+    peye_all = np.array([predict_stage2(row, stage2_model, feature_cols)[1]
+                         for _, row in stage1_df.iterrows()])
+    eye_called = (stage1_df["pdet_twostep"].to_numpy() >= PDET_DETECTABLE) & (peye_all >= PEYE_NAKED_EYE)
+    eye_true = (stage1_df["target_naked_eye"] == 1).to_numpy()
+    not_seen = (stage1_df["target_detectability"] == 0).to_numpy()
+    combined = {
+        "naked_eye_sightings": int(eye_true.sum()),
+        "missed_naked_eye_sightings": int((eye_true & ~eye_called).sum()),
+        "rows_without_naked_eye_detection": int((~eye_true).sum()),
+        "called_naked_eye_without_naked_eye_detection": int((~eye_true & eye_called).sum()),
+        "of_which_non_detections": int((not_seen & eye_called).sum()),
+        "non_detections": int(not_seen.sum()),
+    }
+
+    # =========================
     # Report
     # =========================
     report = {
         "files": {
-            "positive_csv": str(POSITIVE_CSV),
-            "negative_csv": str(NEGATIVE_CSV),
-            "stage1_output_csv": str(OUT_STAGE1_CSV),
-            "stage2_output_csv": str(OUT_STAGE2_CSV),
+            "positive_csv": POSITIVE_CSV.name,
+            "negative_csv": NEGATIVE_CSV.name,
+            "stage1_output_csv": OUT_STAGE1_CSV.name,
+            "stage2_output_csv": OUT_STAGE2_CSV.name,
         },
         "dataset_sizes": {
             "positive_rows_raw": int(len(pos)),
@@ -306,6 +327,7 @@ def main():
         },
         "stage1_detectability": stage1_summary,
         "stage2_aided_vs_naked_eye": stage2_summary,
+        "combined_naked_eye_rule": combined,
     }
 
     OUT_REPORT_JSON.write_text(json.dumps(report, indent=2), encoding="utf-8")
@@ -329,6 +351,14 @@ def main():
     print(f"Difference rate:   {stage2_summary['difference_rate']:.4f}")
     print("Confusion matrix:")
     print(stage2_summary["confusion_matrix"])
+
+    c = combined
+    print("\n=== Combined rule: naked eye if P_det >= 0.50 and P_eye >= 0.60 ===")
+    print(f"Called naked eye without naked-eye detection: "
+          f"{c['called_naked_eye_without_naked_eye_detection']}/{c['rows_without_naked_eye_detection']} "
+          f"({c['of_which_non_detections']} of the {c['non_detections']} non-detections)")
+    print(f"Naked-eye sightings not called naked eye: "
+          f"{c['missed_naked_eye_sightings']}/{c['naked_eye_sightings']}")
 
 
 if __name__ == "__main__":
