@@ -45,25 +45,34 @@ The workflow follows five sequential steps:
 4. **Train** — fit two binary logistic-regression pipelines on 4 470 first-crescent observations:
    - **Stage 1** — detectability (seen by any means vs. not seen)
    - **Stage 2** — naked-eye vs. optical aid (applied only to observations in stage 1 positive class)
-5. **Threshold selection** — sweep probability thresholds, plot ROC and F1 curves, and export `chosen_thresholds.json`
+
+   Performance is estimated by five-fold cross-validation grouped by lunation (one ICOP monthly report page), so reports from the same new moon never sit in both the training and the test folds. The out-of-fold probabilities are saved to `ICOP_Data/two_stage_oof_predictions.csv`, and the final models are fitted on all 4 470 observations.
+5. **Threshold selection** — sweep the out-of-fold probabilities, plot ROC, F1 and calibration curves, and export `chosen_thresholds.json`
 
 External validation runs the saved models against the Alrefay et al. (2018) tables (277 positive, 189 negative observations) via `compare_twostep_with_alrefay_rowwise.py`.
 
 ## Model performance
 
-### Internal test set (25 % hold-out)
+### Cross-validation grouped by lunation (out-of-fold, 4 470 observations)
 
-| Stage | Task | Accuracy | ROC AUC |
-|---|---|---|---|
-| Stage 1 | Detectability (seen vs. not seen) | 78.7 % | 0.868 |
-| Stage 2 | Naked-eye vs. aided | 89.0 % | 0.930 |
+| Stage | Task | Accuracy | ROC AUC | Majority-class accuracy |
+|---|---|---|---|---|
+| Stage 1 | Detectability (seen vs. not seen) | 79.4 % | 0.877 | 51.9 % |
+| Stage 2 | Naked-eye vs. aided (seen observations) | 89.6 % | 0.927 | 76.5 % |
+
+Accuracy uses a probability cut-off of 0.50.
 
 ### External validation — Alrefay et al. (2018) tables
 
 | Stage | Rows | Accuracy |
 |---|---|---|
-| Stage 1 — detectability | 425 | 88.0 % |
+| Stage 1 — detectability | 425 | 86.8 % |
 | Stage 2 — naked-eye vs. aided | 265 | 89.8 % |
+
+## Known issues
+
+- **Monday reports are missing from the feature table.** `03_build_crescent_features.py` removes the weekday from the Arabic date before parsing it, but its list of weekday names has only one spelling of Monday (`الاثنين`), while the ICOP pages write `الإثنين`. The date of every Monday report therefore fails to parse, and these reports are skipped. This removed 981 of the 7 124 cleaned reports (734 of them first-crescent reports made after sunset). The lost reports have the same class shares as those kept and do not differ by year, region or latitude, so the loss is not related to visibility. The archived `crescent_features.csv` and every result derived from it do not include these reports.
+- **Step 3 needs a module that is not in this repository.** `03_build_crescent_features.py` imports `moon_phases_core`, which is not included here, so step 3 cannot be rerun from this repository alone. Its output, `ICOP_Data/crescent_features.csv`, is archived, and steps 3b to 5 start from it.
 
 ## Features used
 
