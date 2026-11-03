@@ -11,14 +11,21 @@ Sharjah_Criterion/
 ├── Sharjah_Criterion/               # Pipeline scripts
 │   ├── 01_scrape_iac_crescent_reports.py
 │   ├── 02_clean_crescent_observations.py
-│   ├── 03_build_crescent_features.py
-│   ├── 03b_correct_moon_lag.py
+│   ├── 03_build_crescent_features.py      # first feature step, kept for reference (see Corrections)
+│   ├── 03b_correct_moon_lag.py            # lag correction of that table, kept for reference
+│   ├── 03c_geocode_sites.py               # checks and completes the site coordinates
+│   ├── 03d_rebuild_features.py            # builds the feature table and applies the validity rules
+│   ├── crescent_geometry.py               # sunset geometry with PyEphem, used by 03d
 │   ├── 04_train_two_stage_crescent_criterion.py
 │   └── 05_choose_thresholds_and_plot_roc.py
 ├── ICOP_Data/                       # Raw and processed observation data
 │   ├── crescent_observations_raw.csv
 │   ├── crescent_observations_clean.csv
-│   └── crescent_features.csv
+│   ├── site_geocodes.csv                  # one row per place: coordinates and how they were found
+│   ├── geocode_restricted_cache.json      # the Nominatim answers used by 03c
+│   ├── observation_audit.csv              # reports excluded or recoded after reading their comments
+│   ├── crescent_features.csv              # the feature table used by steps 4 and 5
+│   └── crescent_features_script03.csv     # the earlier table of scripts 03 and 03b
 ├── Alrefay_tables_Comparison/       # External validation data and outputs
 │   ├── Table_I_positive_observations.csv
 │   ├── Table_II_negative_observations.csv
@@ -41,7 +48,9 @@ The workflow follows five sequential steps:
 
 1. **Scrape** — collect crescent sighting reports from the ICOP archive at [astronomycenter.net](https://astronomycenter.net)
 2. **Clean** — normalise text, booleans, and dates; assign empirical visibility class (0 = not seen, 1 = aided, 2 = naked eye); reject invalid rows
-3. **Build features** — geocode observer locations, compute sunset/moonset times, and derive astronomical parameters (ARCV, ARCL, moon lag, elongation, illumination, Yallop *q*, etc.) using the `ephem` / `skyfield` stack; then `03b_correct_moon_lag.py` recomputes the moon lag where the Moon had already set at sunset (negative lag) or no moonset was found
+3. **Build features**
+   - `03c_geocode_sites.py` checks the coordinates of every place (city, province, country) against the Natural Earth 1:50m boundary of its reported country. Places outside that boundary, and places without coordinates, are geocoded again with OpenStreetMap Nominatim, with the search restricted to the reported country; only a settlement, an administrative area, an island, a peak or an observatory is accepted as a match. Places that cannot be found within their reported country, including reports that name only the country, stay unresolved. Output: `ICOP_Data/site_geocodes.csv`.
+   - `03d_rebuild_features.py` computes the sunset geometry of every cleaned report with `crescent_geometry.py` (ARCV, ARCL, DAZ, crescent width, Moon lag, Moon age, illumination and the other columns) and applies the validity rules below. Every cleaned report keeps its row: a report that is not used has an empty `vis_class_empirical` and the reason in `exclusion_reason`, and `vis_class_reported` keeps the class coded from the report.
 4. **Train** — fit two binary logistic-regression pipelines on 4 470 first-crescent observations:
    - **Stage 1** — detectability (seen by any means vs. not seen)
    - **Stage 2** — naked-eye vs. optical aid (applied only to observations in stage 1 positive class)
