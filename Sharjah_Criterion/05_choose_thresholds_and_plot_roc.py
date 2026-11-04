@@ -44,9 +44,9 @@ threshold.
 
 Inputs (in ../ICOP_Data):
   two_stage_stage1_predictions.csv  y_true (1 = seen by any means) and
-                                    p_positive (out-of-fold P_det), 4,470 rows
+                                    p_positive (out-of-fold P_det), 4,807 rows
   two_stage_stage2_predictions.csv  y_true (1 = naked eye) and p_positive
-                                    (out-of-fold P_eye), the 2,151 sightings
+                                    (out-of-fold P_eye), the 2,252 sightings
 
 Outputs: the three PNG files above, next to this script, and
 ICOP_Data/chosen_thresholds.json.

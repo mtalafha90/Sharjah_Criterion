@@ -1,5 +1,5 @@
 {
-  "rows_used_initial": 4888,
+  "rows_used_initial": 4807,
   "lunations": 205,
   "feature_cols": [
     "relative_altitude_deg",
@@ -9,99 +9,99 @@
   "evaluation": "5-fold cross-validation grouped by lunation (ICOP report page), stratified on the three-class label, random_state=42",
   "stage1": {
     "task": "0 = not seen, 1 = seen by any means",
-    "rows_used": 4888,
+    "rows_used": 4807,
     "class_counts": {
       "0": 2555,
-      "1": 2333
+      "1": 2252
     },
     "score_coefficients": {
-      "intercept": -0.10614455214736108,
-      "relative_altitude_deg": 0.7858015421293937,
-      "elongation_deg": 0.8587439852926546,
-      "moon_lag_minutes": 0.8022327086394161
+      "intercept": -0.1721712951030009,
+      "relative_altitude_deg": 0.7933322381243693,
+      "elongation_deg": 0.8252078467852925,
+      "moon_lag_minutes": 0.8835050548847713
     },
     "metrics": {
-      "accuracy": 0.8095335515548282,
-      "roc_auc": 0.8955556413007282,
-      "majority_class_accuracy": 0.5227086743044189,
+      "accuracy": 0.8133971291866029,
+      "roc_auc": 0.9000647391490235,
+      "majority_class_accuracy": 0.531516538381527,
       "confusion_matrix": [
         [
-          2126,
-          429
+          2148,
+          407
         ],
         [
-          502,
-          1831
+          490,
+          1762
         ]
       ],
-      "classification_report_text": "              precision    recall  f1-score   support\n\n           0      0.809     0.832     0.820      2555\n           1      0.810     0.785     0.797      2333\n\n    accuracy                          0.810      4888\n   macro avg      0.810     0.808     0.809      4888\nweighted avg      0.810     0.810     0.809      4888\n"
+      "classification_report_text": "              precision    recall  f1-score   support\n\n           0      0.814     0.841     0.827      2555\n           1      0.812     0.782     0.797      2252\n\n    accuracy                          0.813      4807\n   macro avg      0.813     0.812     0.812      4807\nweighted avg      0.813     0.813     0.813      4807\n"
     }
   },
   "stage2": {
     "task": "0 = optical aid/instrument only, 1 = naked eye",
-    "rows_used": 2333,
+    "rows_used": 2252,
     "class_counts": {
-      "0": 560,
-      "1": 1773
+      "0": 525,
+      "1": 1727
     },
     "score_coefficients": {
-      "intercept": 2.6796069925207524,
-      "relative_altitude_deg": 1.5940303148820814,
-      "elongation_deg": 0.9513408762437805,
-      "moon_lag_minutes": 0.9930709965780022
+      "intercept": 2.8305308639855373,
+      "relative_altitude_deg": 1.6270420925353455,
+      "elongation_deg": 0.9816892017574234,
+      "moon_lag_minutes": 1.0184823898938973
     },
     "metrics": {
-      "accuracy": 0.8928418345477925,
-      "roc_auc": 0.9264266578035611,
-      "majority_class_accuracy": 0.7599657093870553,
+      "accuracy": 0.8965364120781527,
+      "roc_auc": 0.929092563487468,
+      "majority_class_accuracy": 0.7668738898756661,
       "confusion_matrix": [
         [
-          418,
-          142
+          391,
+          134
         ],
         [
-          108,
-          1665
+          99,
+          1628
         ]
       ],
-      "classification_report_text": "              precision    recall  f1-score   support\n\n           0      0.795     0.746     0.770       560\n           1      0.921     0.939     0.930      1773\n\n    accuracy                          0.893      2333\n   macro avg      0.858     0.843     0.850      2333\nweighted avg      0.891     0.893     0.892      2333\n"
+      "classification_report_text": "              precision    recall  f1-score   support\n\n           0      0.798     0.745     0.770       525\n           1      0.924     0.943     0.933      1727\n\n    accuracy                          0.897      2252\n   macro avg      0.861     0.844     0.852      2252\nweighted avg      0.895     0.897     0.895      2252\n"
     }
   },
   "repeated_cv": {
     "grouped_by_lunation": {
       "stage1_accuracy": {
-        "mean": 0.8098404255319149,
-        "sd": 0.0007790275271955826
+        "mean": 0.813126690243395,
+        "sd": 0.0009459709716543936
       },
       "stage1_auc": {
-        "mean": 0.8962102833253507,
-        "sd": 0.00016445848742158327
+        "mean": 0.9000652083992312,
+        "sd": 0.00015703840066738235
       },
       "stage2_accuracy": {
-        "mean": 0.8929704243463352,
-        "sd": 0.0012131978691443516
+        "mean": 0.8948046181172291,
+        "sd": 0.0010560129651709066
       },
       "stage2_auc": {
-        "mean": 0.926354242204496,
-        "sd": 0.0004584438035718079
+        "mean": 0.9289591088317204,
+        "sd": 0.00033926879066788207
       }
     },
     "ungrouped": {
       "stage1_accuracy": {
-        "mean": 0.8095540098199674,
-        "sd": 0.0004959928135834235
+        "mean": 0.8133347201997086,
+        "sd": 0.0006359202007134147
       },
       "stage1_auc": {
-        "mean": 0.8961923075955218,
-        "sd": 0.00017210872705404823
+        "mean": 0.9001136106891721,
+        "sd": 0.00013658517293984132
       },
       "stage2_accuracy": {
-        "mean": 0.8929704243463353,
-        "sd": 0.0010509030174843622
+        "mean": 0.8950710479573711,
+        "sd": 0.0008386154810074015
       },
       "stage2_auc": {
-        "mean": 0.9263367677866409,
-        "sd": 0.0005981848689567658
+        "mean": 0.9291203022031048,
+        "sd": 0.00020124051553058083
       }
     }
   },

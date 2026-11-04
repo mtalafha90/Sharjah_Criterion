@@ -51,23 +51,23 @@ The workflow follows five sequential steps:
 3. **Build features**
    - `03c_geocode_sites.py` checks the coordinates of every place (city, province, country) against the Natural Earth 1:50m boundary of its reported country. Places outside that boundary, and places without coordinates, are geocoded again with OpenStreetMap Nominatim, with the search restricted to the reported country; only a settlement, an administrative area, an island, a peak or an observatory is accepted as a match. Places that cannot be found within their reported country, including reports that name only the country, stay unresolved. Output: `ICOP_Data/site_geocodes.csv`.
    - `03d_rebuild_features.py` computes the sunset geometry of every cleaned report with `crescent_geometry.py` (ARCV, ARCL, DAZ, crescent width, Moon lag, Moon age, illumination and the other columns) and applies the validity rules below. Every cleaned report keeps its row: a report that is not used has an empty `vis_class_empirical` and the reason in `exclusion_reason`, and `vis_class_reported` keeps the class coded from the report.
-4. **Train** — fit two binary logistic-regression pipelines on 4 470 first-crescent observations:
+4. **Train** — fit two binary logistic-regression pipelines on 4 807 first-crescent observations:
    - **Stage 1** — detectability (seen by any means vs. not seen)
    - **Stage 2** — naked-eye vs. optical aid (applied only to observations in stage 1 positive class)
 
-   Performance is estimated by five-fold cross-validation grouped by lunation (one ICOP monthly report page), so reports from the same new moon never sit in both the training and the test folds. The out-of-fold probabilities are saved to `ICOP_Data/two_stage_oof_predictions.csv`, and the final models are fitted on all 4 470 observations.
+   Performance is estimated by five-fold cross-validation grouped by lunation (one ICOP monthly report page), so reports from the same new moon never sit in both the training and the test folds. The out-of-fold probabilities are saved to `ICOP_Data/two_stage_oof_predictions.csv`, and the final models are fitted on all 4 807 observations.
 5. **Threshold selection** — sweep the out-of-fold probabilities, plot ROC, F1 and calibration curves, and export `chosen_thresholds.json`
 
 External validation runs the saved models against the Alrefay et al. (2018) tables (277 positive, 189 negative observations) via `compare_twostep_with_alrefay_rowwise.py`.
 
 ## Model performance
 
-### Cross-validation grouped by lunation (out-of-fold, 4 470 observations)
+### Cross-validation grouped by lunation (out-of-fold, 4 807 observations)
 
 | Stage | Task | Accuracy | ROC AUC | Majority-class accuracy |
 |---|---|---|---|---|
-| Stage 1 | Detectability (seen vs. not seen) | 79.4 % | 0.877 | 51.9 % |
-| Stage 2 | Naked-eye vs. aided (seen observations) | 89.6 % | 0.927 | 76.5 % |
+| Stage 1 | Detectability (seen vs. not seen) | 81.3 % | 0.900 | 53.2 % |
+| Stage 2 | Naked-eye vs. aided (seen observations) | 89.7 % | 0.929 | 76.7 % |
 
 Accuracy uses a probability cut-off of 0.50.
 
@@ -75,13 +75,31 @@ Accuracy uses a probability cut-off of 0.50.
 
 | Stage | Rows | Accuracy |
 |---|---|---|
-| Stage 1 — detectability | 425 | 86.8 % |
-| Stage 2 — naked-eye vs. aided | 265 | 89.8 % |
+| Stage 1 — detectability | 425 | 87.3 % |
+| Stage 2 — naked-eye vs. aided | 265 | 90.6 % |
 
-## Known issues
+### Validity rules (03d)
 
-- **Monday reports are missing from the feature table.** `03_build_crescent_features.py` removes the weekday from the Arabic date before parsing it, but its list of weekday names has only one spelling of Monday (`الاثنين`), while the ICOP pages write `الإثنين`. The date of every Monday report therefore fails to parse, and these reports are skipped. This removed 981 of the 7 124 cleaned reports (734 of them first-crescent reports made after sunset). The lost reports have the same class shares as those kept and do not differ by year, region or latitude, so the loss is not related to visibility. The archived `crescent_features.csv` and every result derived from it do not include these reports.
-- **Step 3 needs a module that is not in this repository.** `03_build_crescent_features.py` imports `moon_phases_core`, which is not included here, so step 3 cannot be rerun from this repository alone. Its output, `ICOP_Data/crescent_features.csv`, is archived, and steps 3b to 5 start from it.
+The rules apply to the first-crescent reports made after sunset, in this order; a report is counted under the first rule that applies.
+
+| Rule | Reports | Why |
+|---|---|---|
+| Site | 59 removed | the place could not be found within the reported country |
+| R1 | 8 removed | ICOP's heading says the crescent was not seen, but the report records a sighting |
+| R2 | 288 removed | ICOP's heading says the crescent was seen by others: a second-hand report, often from another place |
+| R3 | 8 removed | a sighting on an evening when the Moon had set before the Sun |
+| R4 | 81 removed, 6 recoded | the observer's comment shows a sighting made only in daytime or before sunset, a sighting at another place or by other people, or a report that is not of the evening first crescent (for example, a partial solar eclipse); or it states a different outcome from the coded one |
+
+For R4, the comment of every first-hand sighting that has one (1 368 reports) was read against these rules, and a second reader checked every flag; `ICOP_Data/observation_audit.csv` lists the 102 confirmed flags, with the words of the comment that show the problem. Of the 5 251 first-crescent reports made after sunset, 4 807 remain: 2 555 not seen, 525 seen only with an optical aid and 1 727 seen with the naked eye.
+
+## Corrections in this version
+
+- **Monday reports.** `03_build_crescent_features.py` spelled Monday `الاثنين`, while the ICOP pages write `الإثنين`, so the dates of all 981 Monday reports failed to parse and these reports were dropped. The weekday list is corrected, and `03d` reads every date; 677 Monday reports are in the modelling subset.
+- **Site coordinates.** Script 03 geocoded each place without restricting the search to the reported country, and 20 places (51 modelling reports) lay outside their reported country (for example, Lawrence, Massachusetts, was placed in Canada). `03c` checks every place and geocodes again the doubtful and missing ones, as described above; 45 places (71 reports) could not be found in their reported country. The Natural Earth 1:50m map has no polygon for Melilla, so its three correctly placed sites fall in Morocco's polygon; they are kept.
+- **Geometry.** Script 03 imports `moon_phases_core`, which is not in this repository. `crescent_geometry.py` computes the same quantities with PyEphem. Rebuilt from the same dates and sites, all 6 092 rows of the earlier table agree to within 0.0008° in ARCV, ARCL, DAZ and Moon altitude, 0.0003′ in crescent width and 0.012 min in lag, except that 423 moonsets differ by one minute (rounding) and 15 Moon ages differ by exactly 1 h: the earlier table subtracted local clock times across a daylight-saving change, while the ages are now true elapsed hours.
+- **Invalid reports.** The validity rules above are new.
+
+The earlier feature table is kept as `ICOP_Data/crescent_features_script03.csv`.
 
 ## Features used
 
@@ -104,11 +122,10 @@ python Sharjah_Criterion/01_scrape_iac_crescent_reports.py
 # 2. Clean observations
 python Sharjah_Criterion/02_clean_crescent_observations.py
 
-# 3. Build astronomical features (slow — geocoding + ephemeris)
-python Sharjah_Criterion/03_build_crescent_features.py
-
-# 3b. Correct the moon lag where the Moon had set before sunset or no moonset was found (requires ephem)
-python Sharjah_Criterion/03b_correct_moon_lag.py
+# 3. Check the sites (Nominatim answers are cached in ICOP_Data/geocode_restricted_cache.json),
+#    then build the feature table and apply the validity rules (requires ephem and timezonefinder)
+python Sharjah_Criterion/03c_geocode_sites.py
+python Sharjah_Criterion/03d_rebuild_features.py
 
 # 4. Train two-stage model
 python Sharjah_Criterion/04_train_two_stage_crescent_criterion.py
@@ -120,9 +137,11 @@ python Sharjah_Criterion/05_choose_thresholds_and_plot_roc.py
 python Alrefay_tables_Comparison/compare_twostep_with_alrefay_rowwise.py
 ```
 
+Scripts 03 and 03b produced the earlier table `crescent_features_script03.csv`; script 03 needs the module `moon_phases_core`, which is not included, and 03c reads the coordinates that script 03 found from that table.
+
 ## Data sources
 
-- **ICOP archive** — International Crescent Observation Project, hosted at [astronomycenter.net](https://astronomycenter.net). Scraped observation reports cover multiple Hijri months from participating observers worldwide (~7 100 raw rows, ~6 100 after cleaning and feature computation).
+- **ICOP archive** — International Crescent Observation Project, hosted at [astronomycenter.net](https://astronomycenter.net). Scraped observation reports cover multiple Hijri months from participating observers worldwide (7 154 scraped reports, 7 124 after cleaning).
 - **Alrefay et al. (2018)** — Tables I–VI extracted from the paper (Tables I–III via OCR at 600 dpi; Tables IV–VI manually transcribed). Numeric values should be verified against the source PDF before publication-grade use.
 
 ## References
