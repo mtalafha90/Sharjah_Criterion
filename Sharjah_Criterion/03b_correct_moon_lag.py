@@ -1,4 +1,4 @@
-"""Correct moon_lag_minutes and moonset_local in crescent_features_script03.csv (the table of script 03).
+"""Correct moon_lag_minutes and moonset_local in crescent_features.csv.
 
 The daily report used by 03_build_crescent_features.py returned the next
 day's moonset when the Moon had already set before sunset, giving lags of
@@ -24,7 +24,7 @@ import numpy as np
 import pandas as pd
 
 _ICOP_DATA_DIR = Path(__file__).parent.parent / "ICOP_Data"
-FEATURES_CSV = _ICOP_DATA_DIR / "crescent_features_script03.csv"
+FEATURES_CSV = _ICOP_DATA_DIR / "crescent_features.csv"
 
 # Stored lags above this are next-day moonsets (the longest genuine lag is about 5 h).
 NEXT_DAY_LAG_MIN = 720

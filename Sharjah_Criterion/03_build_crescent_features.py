@@ -18,7 +18,7 @@ from moon_phases_core import build_daily_report, _sky_coords_at
 _ICOP_DATA_DIR = Path(__file__).parent.parent / "ICOP_Data"
 
 INPUT_CSV = _ICOP_DATA_DIR / "crescent_observations_clean.csv"
-OUTPUT_CSV = _ICOP_DATA_DIR / "crescent_features_script03.csv"  # rebuilt by 03d as crescent_features.csv
+OUTPUT_CSV = _ICOP_DATA_DIR / "crescent_features.csv"
 GEOCODE_CACHE_JSON = _ICOP_DATA_DIR / "geocode_cache.json"
 
 TF = TimezoneFinder(in_memory=True)
@@ -46,11 +46,8 @@ AR_MONTHS = {
     "ديسمبر": 12,
 }
 
-# The ICOP pages spell Monday 'الإثنين'. Without that spelling every Monday report
-# failed to parse and was dropped (981 of the 7,124 cleaned reports); script 03d
-# rebuilds the feature table with all of them.
 WEEKDAYS_AR = {
-    "الإثنين", "الاثنين", "الثلاثاء", "الأربعاء", "الاربعاء", "الخميس", "الجمعة", "السبت", "الأحد", "الاحد"
+    "الاثنين", "الثلاثاء", "الأربعاء", "الاربعاء", "الخميس", "الجمعة", "السبت", "الأحد", "الاحد"
 }
 
 
