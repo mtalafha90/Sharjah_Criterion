@@ -12,40 +12,40 @@
     "stage2_rows_used": 265
   },
   "stage1_detectability": {
-    "accuracy": 0.8682352941176471,
-    "difference_rate": 0.1317647058823529,
+    "accuracy": 0.8658823529411764,
+    "difference_rate": 0.13411764705882356,
     "confusion_matrix": [
       [
         160,
         0
       ],
       [
-        56,
-        209
+        57,
+        208
       ]
     ],
-    "classification_report": "              precision    recall  f1-score   support\n\n           0      0.741     1.000     0.851       160\n           1      1.000     0.789     0.882       265\n\n    accuracy                          0.868       425\n   macro avg      0.870     0.894     0.866       425\nweighted avg      0.902     0.868     0.870       425\n"
+    "classification_report": "              precision    recall  f1-score   support\n\n           0      0.737     1.000     0.849       160\n           1      1.000     0.785     0.879       265\n\n    accuracy                          0.866       425\n   macro avg      0.869     0.892     0.864       425\nweighted avg      0.901     0.866     0.868       425\n"
   },
   "stage2_aided_vs_naked_eye": {
-    "accuracy": 0.8981132075471698,
-    "difference_rate": 0.10188679245283017,
+    "accuracy": 0.9056603773584906,
+    "difference_rate": 0.09433962264150941,
     "confusion_matrix": [
       [
-        55,
-        24
+        56,
+        23
       ],
       [
-        3,
-        183
+        2,
+        184
       ]
     ],
-    "classification_report": "              precision    recall  f1-score   support\n\n           0      0.948     0.696     0.803        79\n           1      0.884     0.984     0.931       186\n\n    accuracy                          0.898       265\n   macro avg      0.916     0.840     0.867       265\nweighted avg      0.903     0.898     0.893       265\n"
+    "classification_report": "              precision    recall  f1-score   support\n\n           0      0.966     0.709     0.818        79\n           1      0.889     0.989     0.936       186\n\n    accuracy                          0.906       265\n   macro avg      0.927     0.849     0.877       265\nweighted avg      0.912     0.906     0.901       265\n"
   },
   "combined_naked_eye_rule": {
     "naked_eye_sightings": 186,
-    "missed_naked_eye_sightings": 3,
+    "missed_naked_eye_sightings": 2,
     "rows_without_naked_eye_detection": 239,
-    "called_naked_eye_without_naked_eye_detection": 23,
+    "called_naked_eye_without_naked_eye_detection": 22,
     "of_which_non_detections": 0,
     "non_detections": 160
   }
