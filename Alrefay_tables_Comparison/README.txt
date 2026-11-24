@@ -16,8 +16,9 @@ Notes:
 
 Corrections (November 2026):
 - Eight values that the OCR had misread, but that still parsed as numbers, were
-  corrected in Tables I and II. Each correction is confirmed by the relation
-  cos(ARCL) = cos(ARCV) cos(DAZ) with the other two values of the same row; the
+  corrected in Tables I and II. Each ARCV or ARCL correction is confirmed by the
+  relation cos(ARCL) = cos(ARCV) cos(DAZ) with the other two values of the same row,
+  and the lag correction (078 -> 07) by HilalPy's copy of the row (LT 6.96 min); the
   raw_ocr_line column keeps the OCR text.
     Table I  1991/04/15 28.40 36.73  ARCV 11102  -> 11.02
     Table I  2001/04/24 21.42 39.83  ARCV 111.31 -> 11.31
@@ -27,8 +28,8 @@ Corrections (November 2026):
     Table II 2010/08/10 26.37 49.82  Lag  078    -> 07
     Table II 2011/07/01 28.40 36.73  ARCV 011.34 -> 01.34
     Table II 2015/01/20 26.37 49.82  ARCV 011.00 -> 01.00
-  Two misread DAZ values were corrected in the same way (DAZ is not an input of the
-  two-stage model, so no result changes):
+  Two misread DAZ values were also corrected, each confirmed by the same relation
+  (DAZ is not an input of the two-stage model, so no result changes):
     Table I  1992/07/01 26.45 36.38  DAZ  01.14  -> 11.14
     Table II 1998/10/20 24.60 46.45  DAZ  011.62 -> 01.62
 - 41 of the 466 rows still have a lag, ARCV or ARCL value that does not parse as a
