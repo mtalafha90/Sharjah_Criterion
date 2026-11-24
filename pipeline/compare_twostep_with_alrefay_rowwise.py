@@ -12,18 +12,20 @@ from sklearn.metrics import confusion_matrix, classification_report, accuracy_sc
 # ============================================================
 # CONFIG
 # ============================================================
-BASE_DIR = Path(__file__).parent
+REPO_ROOT = Path(__file__).resolve().parent.parent
+ALREFAY_DIR = REPO_ROOT / "data" / "alrefay"  # the tables and the comparison written here
+MODELS_DIR = REPO_ROOT / "models"  # written by pipeline/04_train_two_stage_crescent_criterion.py
 
-POSITIVE_CSV = BASE_DIR / "Table_I_positive_observations.csv"
-NEGATIVE_CSV = BASE_DIR / "Table_II_negative_observations.csv"
+POSITIVE_CSV = ALREFAY_DIR / "Table_I_positive_observations.csv"
+NEGATIVE_CSV = ALREFAY_DIR / "Table_II_negative_observations.csv"
 
-MODEL_META_JSON = BASE_DIR / "two_stage_model_meta.json"
-STAGE1_MODEL_JOBLIB = BASE_DIR / "stage1_detectability_model.joblib"
-STAGE2_MODEL_JOBLIB = BASE_DIR / "stage2_naked_eye_model.joblib"
+MODEL_META_JSON = MODELS_DIR / "two_stage_model_meta.json"
+STAGE1_MODEL_JOBLIB = MODELS_DIR / "stage1_detectability_model.joblib"
+STAGE2_MODEL_JOBLIB = MODELS_DIR / "stage2_naked_eye_model.joblib"
 
-OUT_STAGE1_CSV = BASE_DIR / "alrefay_stage1_rowwise_comparison.csv"
-OUT_STAGE2_CSV = BASE_DIR / "alrefay_stage2_rowwise_comparison.csv"
-OUT_REPORT_JSON = BASE_DIR / "alrefay_rowwise_validation_report.json"
+OUT_STAGE1_CSV = ALREFAY_DIR / "alrefay_stage1_rowwise_comparison.csv"
+OUT_STAGE2_CSV = ALREFAY_DIR / "alrefay_stage2_rowwise_comparison.csv"
+OUT_REPORT_JSON = ALREFAY_DIR / "alrefay_rowwise_validation_report.json"
 
 # Operational thresholds used by your saved model
 PDET_DETECTABLE = 0.50
@@ -62,8 +64,8 @@ def require_columns(df: pd.DataFrame, required: list[str], label: str):
 def load_models():
     meta = json.loads(MODEL_META_JSON.read_text(encoding="utf-8"))
 
-    stage1_path = BASE_DIR / meta.get("stage1_model", STAGE1_MODEL_JOBLIB.name)
-    stage2_path = BASE_DIR / meta.get("stage2_model", STAGE2_MODEL_JOBLIB.name)
+    stage1_path = MODELS_DIR / meta.get("stage1_model", STAGE1_MODEL_JOBLIB.name)
+    stage2_path = MODELS_DIR / meta.get("stage2_model", STAGE2_MODEL_JOBLIB.name)
 
     stage1 = joblib.load(stage1_path)
     stage2 = joblib.load(stage2_path)

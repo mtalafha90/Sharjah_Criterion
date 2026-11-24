@@ -19,19 +19,19 @@ from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
 
 _REPO_ROOT = Path(__file__).parent.parent
-_ICOP_DATA_DIR = _REPO_ROOT / "ICOP_Data"
-_ALREFAY_DIR = _REPO_ROOT / "Alrefay_tables_Comparison"
+_ICOP_DATA_DIR = _REPO_ROOT / "data" / "icop"
+_MODELS_DIR = _REPO_ROOT / "models"
 
 INPUT_CSV = _ICOP_DATA_DIR / "crescent_features.csv"
 
-REPORT_JSON = _ALREFAY_DIR / "two_stage_crescent_criterion_report.json"
+REPORT_JSON = _MODELS_DIR / "two_stage_crescent_criterion_report.json"
 STAGE1_PRED_CSV = _ICOP_DATA_DIR / "two_stage_stage1_predictions.csv"
 STAGE2_PRED_CSV = _ICOP_DATA_DIR / "two_stage_stage2_predictions.csv"
 OOF_CSV = _ICOP_DATA_DIR / "two_stage_oof_predictions.csv"
 
-STAGE1_MODEL_JOBLIB = _ALREFAY_DIR / "stage1_detectability_model.joblib"
-STAGE2_MODEL_JOBLIB = _ALREFAY_DIR / "stage2_naked_eye_model.joblib"
-MODEL_META_JSON = _ALREFAY_DIR / "two_stage_model_meta.json"
+STAGE1_MODEL_JOBLIB = _MODELS_DIR / "stage1_detectability_model.joblib"
+STAGE2_MODEL_JOBLIB = _MODELS_DIR / "stage2_naked_eye_model.joblib"
+MODEL_META_JSON = _MODELS_DIR / "two_stage_model_meta.json"
 
 N_FOLDS = 5
 

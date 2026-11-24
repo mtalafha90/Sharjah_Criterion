@@ -8,7 +8,7 @@ lunation, so no record is scored by a model that saw its own new moon) and:
      thresholds: the maximum of Youden's J (J = TPR - FPR), the maximum F1
      score on a grid 0.050, 0.055, ..., 0.950, and the fixed values 0.30,
      0.50 and 0.70;
-  2. saves those candidates in ICOP_Data/chosen_thresholds.json;
+  2. saves those candidates in models/chosen_thresholds.json;
   3. draws three figures. The first two are 6.5 in wide at 300 dpi, made to
      be included at the full text width, so that no text prints smaller
      than 8 pt:
@@ -42,17 +42,17 @@ lunation, so no record is scored by a model that saw its own new moon) and:
 A record is called positive when its probability is at or above the
 threshold.
 
-Inputs (in ../ICOP_Data):
+Inputs (in data/icop):
   two_stage_stage1_predictions.csv  y_true (1 = seen by any means) and
                                     p_positive (out-of-fold P_det), 4,470 rows
   two_stage_stage2_predictions.csv  y_true (1 = naked eye) and p_positive
                                     (out-of-fold P_eye), the 2,151 sightings
 
-Outputs: the three PNG files above, next to this script, and
-ICOP_Data/chosen_thresholds.json.
+Outputs: the three PNG files above, in figures/, and
+models/chosen_thresholds.json.
 
 Run from the repository root:
-  python3 Sharjah_Criterion/05_choose_thresholds_and_plot_roc.py
+  python3 pipeline/05_choose_thresholds_and_plot_roc.py
 """
 from __future__ import annotations
 
@@ -77,12 +77,14 @@ from sklearn.metrics import (
     recall_score,
 )
 
-_ICOP_DATA_DIR = Path(__file__).parent.parent / "ICOP_Data"
-_OUT_DIR = Path(__file__).parent
+_REPO_ROOT = Path(__file__).parent.parent
+_ICOP_DATA_DIR = _REPO_ROOT / "data" / "icop"
+_MODELS_DIR = _REPO_ROOT / "models"
+_OUT_DIR = _REPO_ROOT / "figures"
 
 STAGE1_CSV = _ICOP_DATA_DIR / "two_stage_stage1_predictions.csv"
 STAGE2_CSV = _ICOP_DATA_DIR / "two_stage_stage2_predictions.csv"
-OUT_JSON = _ICOP_DATA_DIR / "chosen_thresholds.json"
+OUT_JSON = _MODELS_DIR / "chosen_thresholds.json"
 
 ROC_PNG = _OUT_DIR / "roc_two_stage.png"
 THRESHOLDS_PNG = _OUT_DIR / "thresholds_two_stage.png"

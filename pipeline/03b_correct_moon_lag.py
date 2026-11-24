@@ -23,7 +23,7 @@ import ephem
 import numpy as np
 import pandas as pd
 
-_ICOP_DATA_DIR = Path(__file__).parent.parent / "ICOP_Data"
+_ICOP_DATA_DIR = Path(__file__).parent.parent / "data" / "icop"
 FEATURES_CSV = _ICOP_DATA_DIR / "crescent_features.csv"
 
 # Stored lags above this are next-day moonsets (the longest genuine lag is about 5 h).

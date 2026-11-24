@@ -15,7 +15,7 @@ from timezonefinder import TimezoneFinder
 from moon_phases_core import build_daily_report, _sky_coords_at
 
 
-_ICOP_DATA_DIR = Path(__file__).parent.parent / "ICOP_Data"
+_ICOP_DATA_DIR = Path(__file__).parent.parent / "data" / "icop"
 
 INPUT_CSV = _ICOP_DATA_DIR / "crescent_observations_clean.csv"
 OUTPUT_CSV = _ICOP_DATA_DIR / "crescent_features.csv"

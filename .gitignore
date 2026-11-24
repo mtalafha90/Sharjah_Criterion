@@ -1,1 +1,4 @@
 __pycache__/
+*.pyc
+# Written by pipeline/03_build_crescent_features.py while geocoding.
+data/icop/geocode_cache.json

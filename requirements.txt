@@ -1,0 +1,23 @@
+# Package versions used for pipeline steps 02-05, the Alrefay comparison and the
+# analysis scripts. Printed by section [0] of:  python3 -W ignore analysis/worked_example.py
+# Python 3.11.17 (CPython), Linux x86_64
+# Install with:  python3 -m pip install -r requirements.txt
+numpy==2.4.6
+pandas==3.0.6
+scipy==1.17.1
+scikit-learn==1.9.1  # the saved Stage 1 and Stage 2 models were written with this version
+statsmodels==0.15.0
+ephem==4.2.1
+matplotlib==3.11.2
+cartopy==0.26.0
+joblib==1.6.0
+threadpoolctl==3.7.0
+# Installed with cartopy; used for the maps only.
+shapely==2.2.0
+pyproj==3.7.2
+pyshp==3.1.6
+# Not installed here, so steps 01 (scraping) and 03 (geocoding and features) were not
+# re-run with these versions. They also need requests, beautifulsoup4 and
+# timezonefinder, and step 03 imports the module moon_phases_core, which is not in the
+# repository. Their outputs are archived in data/icop, and every later step starts
+# from those files.

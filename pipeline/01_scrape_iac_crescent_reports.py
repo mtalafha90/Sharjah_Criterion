@@ -6,7 +6,7 @@ import pandas as pd
 from bs4 import BeautifulSoup
 from urllib.parse import urljoin
 
-_ICOP_DATA_DIR = Path(__file__).parent.parent / "ICOP_Data"
+_ICOP_DATA_DIR = Path(__file__).parent.parent / "data" / "icop"
 
 BASE = "https://astronomycenter.net/"
 INDEX_URL = urljoin(BASE, "res.html")

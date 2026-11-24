@@ -2,8 +2,8 @@ cff-version: 1.2.0
 message: "If you use this software, please cite it as below."
 type: software
 title: "Sharjah Criterion: A Two-Stage Empirical Lunar Crescent Visibility Model"
-version: 1.0.0
-date-released: "2026-06-19"
+version: 1.1.0
+date-released: "2026-11-24"
 authors:
   - family-names: Talafha
     given-names: Mohammed
@@ -15,7 +15,8 @@ abstract: >
   scrapes, cleans, and enriches observations with astronomical features,
   trains stage-1 (detectability) and stage-2 (naked-eye vs. aided) models,
   selects operational thresholds, and validates externally against the
-  Alrefay et al. (2018) published tables.
+  Alrefay et al. (2018) published tables. The analysis scripts reproduce
+  every table and figure of the accompanying paper.
 keywords:
   - lunar crescent
   - crescent visibility
@@ -28,4 +29,5 @@ keywords:
 license: MIT
 identifiers:
   - type: doi
-    value: 10.5281/zenodo.20755360
+    value: 10.5281/zenodo.20755359
+    description: "Concept DOI: all versions; it resolves to the latest one"

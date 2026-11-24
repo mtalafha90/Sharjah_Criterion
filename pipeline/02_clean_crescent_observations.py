@@ -4,7 +4,7 @@ import re
 from pathlib import Path
 import pandas as pd
 
-_ICOP_DATA_DIR = Path(__file__).parent.parent / "ICOP_Data"
+_ICOP_DATA_DIR = Path(__file__).parent.parent / "data" / "icop"
 
 INPUT_CSV = _ICOP_DATA_DIR / "crescent_observations_raw.csv"
 OUTPUT_CSV = _ICOP_DATA_DIR / "crescent_observations_clean.csv"
