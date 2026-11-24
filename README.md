@@ -1,6 +1,6 @@
 # Sharjah Criterion
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.20755360.svg)](https://doi.org/10.5281/zenodo.20755360)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.20755359.svg)](https://doi.org/10.5281/zenodo.20755359)
 
 A data-driven two-stage empirical criterion for lunar crescent visibility, derived from ICOP crescent sighting reports. The model is validated externally against the Alrefay et al. (2018) published observation tables and benchmarked against classical visibility criteria (Maunder, Indian, Fotheringham, Yallop).
 
@@ -127,7 +127,9 @@ python Alrefay_tables_Comparison/compare_twostep_with_alrefay_rowwise.py
 
 If you use this code or data, please cite:
 
-> Talafha, M. (2026). *Sharjah Criterion: A Two-Stage Empirical Lunar Crescent Visibility Model* (v1.0.0). Zenodo. https://doi.org/10.5281/zenodo.20755360
+> Talafha, M. (2026). *Sharjah Criterion: A Two-Stage Empirical Lunar Crescent Visibility Model*. Zenodo. https://doi.org/10.5281/zenodo.20755359
+
+This DOI always points to the latest archived version. To cite the exact version you used, take its own DOI from the Zenodo page.
 
 BibTeX:
 
@@ -135,11 +137,10 @@ BibTeX:
 @software{talafha_2026_sharjah_criterion,
   author    = {Talafha, Mohammed},
   title     = {{Sharjah Criterion: A Two-Stage Empirical Lunar Crescent Visibility Model}},
-  version   = {1.0.0},
   year      = {2026},
   publisher = {Zenodo},
-  doi       = {10.5281/zenodo.20755360},
-  url       = {https://doi.org/10.5281/zenodo.20755360}
+  doi       = {10.5281/zenodo.20755359},
+  url       = {https://doi.org/10.5281/zenodo.20755359}
 }
 ```
 
