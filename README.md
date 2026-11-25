@@ -39,7 +39,7 @@ Every script finds its files from its own location, so it can be run from any fo
 | `two_stage_stage1_predictions.csv` | `pipeline/04` | 4,470 | out-of-fold Stage 1 predictions |
 | `two_stage_stage2_predictions.csv` | `pipeline/04` | 2,151 | out-of-fold Stage 2 predictions (sightings only) |
 
-Observed classes: 0 = not seen, 1 = seen with optical aid only, 2 = seen with the naked eye.
+Observed classes: 0 = not seen, 1 = seen with optical aid only, 2 = seen with the naked eye. Personal phone numbers that observers wrote in their reports are replaced by `[number removed]`; observers' names are kept as published on the ICOP pages.
 
 `data/alrefay/`: Tables I-VI of Alrefay et al. (2018), transcribed from the scanned paper (see `data/alrefay/README.txt`, which also lists the values corrected in November 2026), and the row-by-row comparison written by `pipeline/compare_twostep_with_alrefay_rowwise.py` (425 usable records, 265 of them sightings).
 
@@ -85,7 +85,7 @@ Steps 02, 03b, 04, 05 and the Alrefay comparison reproduce the archived data, mo
 
 ## Analysis scripts
 
-The scripts in `analysis/` start from the archived files in `data/` and `models/` and print the numbers given in the paper; the figure scripts write to `figures/`. Run them from the repository root, for example `python3 analysis/statistical_checks.py`. The first run of `regional_check.py`, `data_selection_flowchart.py`, `visibility_maps.py` or `graphical_abstract.py` needs internet access, because cartopy then downloads the Natural Earth country borders and coastlines. Four scripts also need the HilalPy sighting database: the file `Final 30.6.2023.csv` of the Mendeley Data deposit [10.17632/rs994bxgc4.1](https://doi.org/10.17632/rs994bxgc4.1) (CC BY 4.0), passed with `--hilalpy` (or `--input` for `hilalpy_independent_check.py`).
+The scripts in `analysis/` start from the archived files in `data/` and `models/` and print the numbers given in the paper; the figure scripts write to `figures/`. Run them from the repository root, for example `python3 analysis/statistical_checks.py`. The first run of `regional_check.py`, `data_selection_flowchart.py`, `visibility_maps.py` or `graphical_abstract.py` needs internet access, because cartopy then downloads the Natural Earth country borders and coastlines. Figures redrawn on another system can differ slightly in how text and lines are rendered. Four scripts also need the HilalPy sighting database: the file `Final 30.6.2023.csv` of the Mendeley Data deposit [10.17632/rs994bxgc4.1](https://doi.org/10.17632/rs994bxgc4.1) (CC BY 4.0), passed with `--hilalpy` (or `--input` for `hilalpy_independent_check.py`).
 
 | Script | Reproduces |
 |---|---|
@@ -167,4 +167,4 @@ BibTeX:
 
 ## Licence
 
-MIT — see [LICENSE](LICENSE).
+MIT — see [LICENSE](LICENSE). The MIT licence covers the code and the files it produces. The report in `docs/` is © 2026 Mohammed H. Talafha, all rights reserved, and is included for reference. The ICOP report texts and the Alrefay et al. (2018) tables come from the sources listed under Data sources, and their terms apply.

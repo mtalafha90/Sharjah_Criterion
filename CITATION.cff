@@ -3,11 +3,12 @@ message: "If you use this software, please cite it as below."
 type: software
 title: "Sharjah Criterion: A Two-Stage Empirical Lunar Crescent Visibility Model"
 version: 1.1.0
-date-released: "2026-11-24"
+date-released: "2026-11-25"
 authors:
   - family-names: Talafha
     given-names: Mohammed
     email: mtalafha901@gmail.com
+    affiliation: "Research Institute of Sciences and Engineering, University of Sharjah"
 doi: 10.5281/zenodo.20755359
 repository-code: "https://github.com/mtalafha90/Sharjah_Criterion"
 abstract: >

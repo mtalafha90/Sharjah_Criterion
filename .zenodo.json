@@ -21,11 +21,5 @@
     "ICOP",
     "Alrefay"
   ],
-  "related_identifiers": [
-    {
-      "identifier": "https://github.com/mtalafha90/Sharjah_Criterion",
-      "relation": "isSupplementTo",
-      "scheme": "url"
-    }
-  ]
+  "notes": "Changes in version 1.1.0: Moon lag times corrected (pipeline/03b_correct_moon_lag.py) and the model refitted; five-fold cross-validation grouped by lunation replaces the random 75/25 split; eight misread values (and two DAZ values) of the Alrefay et al. (2018) tables corrected; analysis scripts that reproduce the tables and figures of the paper added; new folder layout (pipeline/, analysis/, data/, models/, figures/, docs/); personal phone numbers in the ICOP report texts masked; outputs of the first version removed (they remain in version 1.0.0). Known issue: the 981 Monday reports lost to a date-parsing defect are still missing from crescent_features.csv."
 }
