@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
-"""Predictor ablation (reviewer comment 4), evaluated by lunation (comment 6).
+"""Predictor ablation (second review round, comment 4), evaluated by lunation
+(second review round, comment 6).
 
-Comment 6: "On testing, reports from the same new-moon night look alike, so a
-random split puts almost identical cases in both train and test, and a split
-by lunation would be fairer."
+The script compares three predictor sets in each stage of the two-stage model.
+The cross-validation keeps each lunation whole: all its reports are in the
+same fold.
 
 Input: data/icop/crescent_features.csv,
 filtered as in 04_train_two_stage_crescent_criterion.py. The two-stage model

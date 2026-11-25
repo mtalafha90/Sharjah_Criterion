@@ -1,10 +1,9 @@
 #!/usr/bin/env python3
 """Independent check of the Sharjah criterion on the HilalPy sighting database.
 
-Reviewer: "saying the 8,290-record compilation could not be rebuilt ... is not
-a scientific reason to leave it out. The integrated database and tools exist,
-so I would encourage the authors to use them, at least for an independent
-check."
+This script applies the saved Sharjah criterion (both stages) to the
+non-ICOP evening reports in the HilalPy sighting database. It also scores
+other criteria and models on the same reports.
 
 Data (--input): the authors' Mendeley Data deposit "Hilalpy: Database of Lunar
 Crescent Sighting" (Faid et al.), DOI 10.17632/rs994bxgc4.1 (version 1,

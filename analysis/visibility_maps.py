@@ -1,10 +1,8 @@
 #!/usr/bin/env python3
-"""Crescent visibility maps at local sunset (reviewer comment 6).
+"""Crescent visibility maps at local sunset (second review round, comment 6).
 
-Reviewer: the maps were screenshots of an app evaluated at a 'best time';
-Fig. 6 (16 May 2026) used a morning, pre-conjunction geometry (the new moon
-is near 16 May 2026, 20 UT, so the first evening is 17 May); the legends say
-'Optical aid likely', whereas Eq. 11 of the revised manuscript says 'aid-assisted likely'.
+The script draws maps of the five operational bands of the final two-stage
+model, by default for the evenings of 17 May, 15 June and 15 July 2026.
 
 Method. Every map point is evaluated at its own local sunset on the evening of
 the given date, in the conventions of the ICOP feature table

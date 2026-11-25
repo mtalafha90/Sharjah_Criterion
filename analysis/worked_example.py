@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
-"""Record counts, final model parameters and a worked example (reviewer comment 7).
+"""Record counts, final model parameters and a worked example
+(second review round, comment 7).
 
-Reviewer: "please give the number of records in every stage and split, the
-final model coefficients and scaling values, the software versions, and a
-frozen copy of the data. A worked numerical example would be very useful here
-too."
+The script prints the software versions, the record counts, the final model
+parameters and a worked example. It also checks that refitting reproduces the
+saved out-of-fold predictions and the saved models.
 
 Inputs: data/icop and models/ (final models from
 pipeline/04_train_two_stage_crescent_criterion.py). Sections:

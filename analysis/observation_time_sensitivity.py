@@ -1,11 +1,9 @@
 #!/usr/bin/env python3
-"""Sensitivity to the assumed observation time (reviewer comment 7).
+"""Sensitivity to the assumed observation time (second review round, comment 7).
 
-Comment 7 (statistical review):
-  "Many observation times are filled with the local sunset, so a simple
-  sensitivity test would help. For example, shift the observation time by
-  +/-15 or +/-30 minutes, or drop the sunset-fallback records, and see how
-  much the coefficients and scores change."
+The script recomputes ARCV and ARCL with the observation time set 15 and 30
+minutes before and after local sunset, and compares the scores, coefficients
+and predictions of both stages with those at sunset.
 
 Every record of the modelling subset takes its geometry at local sunset
 (obs_time_source is 'sunset_fallback' for all 4,470 rows), so there is no

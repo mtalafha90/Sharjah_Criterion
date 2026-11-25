@@ -1,14 +1,10 @@
 #!/usr/bin/env python3
-"""Compare ordered and two-step three-class models (reviewer comments 5 and 6).
+"""Compare ordered and two-step three-class models
+(second review round, comments 5 and 6).
 
-Comment 5: "The three classes have a natural order (not seen, aided, naked
-eye), and the three-class model that failed was not an ordered model, so it
-is a weak reason on its own. Its accuracy (0.763) is also higher than any
-three-class number in Table 1, which deserves a comment."
-
-Comment 6: "On testing, reports from the same new-moon night look alike, so a
-random split puts almost identical cases in both train and test, and a split
-by lunation would be fairer."
+This script fits the multinomial, ordered and two-step models of the three
+classes on the same folds and compares their scores. It also shows the
+accuracy of the multinomial model under grouped and random splits.
 
 Input: data/icop/crescent_features.csv,
 filtered exactly as in 04_train_two_stage_crescent_criterion.py. A lunation

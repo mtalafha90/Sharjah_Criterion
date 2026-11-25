@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""Schematic of the sky geometry at local sunset (reviewer comment 6).
+"""Schematic of the sky geometry at local sunset
+(second review round, comment 6).
 
-Reviewer: Fig. 1 is a Stellarium screenshot for 17 July 2026 with no location.
-This script replaces it with a labelled drawing of the quantities used in the
+This script makes a labelled drawing of the quantities used in the
 paper, all taken at local sunset: the western horizon, the Sun just below it
 (its centre at -0.83 deg), the Moon above, ARCV (vertical), DAZ (along the
 horizon), ARCL (the Sun-Moon arc) and the crescent width W on an enlarged

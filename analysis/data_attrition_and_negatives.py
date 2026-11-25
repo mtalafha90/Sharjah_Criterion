@@ -1,13 +1,11 @@
 #!/usr/bin/env python3
-"""Data attrition and the meaning of negative reports (reviewer comment 7).
+"""Data attrition and the meaning of negative reports
+(second review round, comment 7).
 
-Comment 7 asks: "The loss from about 7,100 reports to about 6,100 and then
-4,470 should also be shown step by step, with class counts at each step, and
-it would help to check whether the dropped records differ from those kept,
-for example by region, year or class." It also asks, after noting that in
-Faid et al. (2024) almost all negative records were naked-eye-only attempts:
-"Please report how many negatives had aids attempted, and exclude or adjust
-for poor-sky reports."
+The script counts the records, by class, left after each step of the pipeline,
+and compares the reports lost with those kept. It also reads which means were
+tried in the negative reports, and refits the model with some of the negatives
+removed.
 
 Inputs, from data/icop: the scraped reports
 (01), the clean and rejected reports (02), crescent_features.csv (03, then

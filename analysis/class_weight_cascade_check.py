@@ -1,15 +1,12 @@
 #!/usr/bin/env python3
-"""Class weights, an ordered model and the whole cascade (reviewer comment 7).
+"""Class weights, an ordered model and the whole cascade
+(second review round, comment 7).
 
-Comment 7: "The direct three-class model is described as 'failing' on the
-aided class, but only accuracy and one class result are shown. A default
-multi-class model often ignores a small middle class unless class weights are
-used. I would encourage trying class weights and an ordered model, such as
-proportional-odds or continuation-ratio logistic regression, and comparing the
-models with cross-validated log-loss or a similar measure. Stage 2 is also
-evaluated only on cases that were truly detectable. In real use, Stage 1
-errors pass into Stage 2, so the performance of the whole cascade should be
-reported, with a full three-class confusion matrix."
+The script compares a multinomial logistic model and the two-step cascade,
+each with and without balanced class weights, and a proportional-odds model,
+by cross-validated log-loss, Brier score, accuracy and related scores. It also
+gives the full three-class confusion matrices of the whole cascade and shows
+how Stage 1 errors pass into Stage 2.
 
 Input: data/icop/crescent_features.csv,
 filtered as in 04_train_two_stage_crescent_criterion.py (4,470 rows, 202

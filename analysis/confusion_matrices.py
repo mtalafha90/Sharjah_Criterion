@@ -1,12 +1,9 @@
 #!/usr/bin/env python3
-"""Confusion matrices of both stages and of the full cascade (reviewer point 3).
+"""Confusion matrices of both stages and of the full cascade
+(second review round, point 3).
 
-Reviewer: "Consider presenting the confusion matrices as a two-panel heatmap.
-The manuscript already reports the confusion matrices for both stages in the
-text. Presenting them visually, with consistent class labels and the
-corresponding sample counts, would make the types of classification errors
-easier to identify ... help readers assess how the model performs in
-distinguishing non-detection, aided detection, and naked-eye visibility."
+This script draws the confusion matrices of Stage 1, Stage 2 and the full
+cascade as heatmaps in one figure. It also prints each matrix as a table.
 
 What the figure shows (confusion_matrices.png, 300 dpi, 6.5 in wide, no
 title). Rows are the observed classes, columns the predicted classes, and the

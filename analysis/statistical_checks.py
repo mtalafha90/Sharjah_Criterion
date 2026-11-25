@@ -1,22 +1,12 @@
 #!/usr/bin/env python3
-"""Intervals, collinearity, non-linear terms and the Alrefay check (reviewer comment 7).
+"""Intervals, collinearity, non-linear terms and the Alrefay check
+(second review round, comment 7).
 
-Comment 7 (statistical review) asks for:
-  "Uncertainty is also missing from every headline number... I would ask for
-  intervals, for example by bootstrap, on accuracy, AUC, precision and recall,
-  and for the coefficients too."
-  "Balanced accuracy, F1, Matthews correlation or kappa, and precision-recall
-  curves for Stage 2, would give a fuller picture."
-  "ARCV, ARCL and t_lag are strongly related, so the coefficients may be
-  unstable. Please report the coefficients with confidence intervals, check
-  collinearity (for example with variance inflation factors), and say whether
-  any regularisation was used... interactions, squared terms or splines are
-  worth testing. The authors should also say how many values were filled by
-  median imputation and for which variables."
-  "With 160 negative cases and no false positives, the 95% upper limit on the
-  false-positive rate is still about 2% ... aided recall ... interval ...
-  Please report intervals, state which thresholds were used, and check whether
-  the Alrefay records overlap with ICOP."
+The script puts 95% intervals on the out-of-fold metrics and the coefficients,
+checks collinearity, compares the L2 fit with an unpenalised fit, counts the
+imputed values, tests non-linear terms and draws precision-recall curves. It
+also repeats the Alrefay check with intervals, with and without the records
+that match ICOP reports.
 
 Inputs (default paths in this repository):
   data/icop/crescent_features.csv          6,092 reports; the modelling subset

@@ -3,10 +3,9 @@
 classical crescent-visibility criteria, two simple rules and a majority-class
 baseline, with confidence intervals from a bootstrap over lunations.
 
-Reviewer comment 6 asked for confidence intervals or a significance test for
-the small differences in Table 1, for a split by lunation instead of a random
-split, for simple baselines, and for a Fig. 10 y-axis that does not start at
-0.55. This script answers all four.
+With --sample model, Sharjah is scored out-of-fold by lunation and compared
+with every other row by paired bootstrap differences. With --figure, every
+Table 1 row is drawn with its 95 % interval (second review round, comment 6).
 
 Input: data/icop/crescent_features.csv.
 Truth is vis_class_empirical (0 = not seen, 1 = aided only, 2 = naked eye).
@@ -59,8 +58,9 @@ are grouped by approach (single-boundary, multirange, simple rule, baseline),
 and the Sharjah row is tinted blue. Every panel runs from 0 to 1, so that small
 differences are not enlarged; the value is written beside each point. The
 alternative models of --include-alternatives are not drawn. The script prints
-the drawn values. Reviewer point 4 (round 2) asked for the approaches, the
-metrics and their evaluation bases to be clearly distinguished, with intervals.
+the drawn values. Each panel heading names its metric and the reports it is
+computed on, and each group heading says what kind of prediction the group
+gives (second review round, point 4).
 
 Run from the repository root (writes figures/criteria_comparison.png, 300 dpi, 6.5 in wide):
   python3 -W ignore -I -B analysis/table1_criteria_comparison.py --sample model \\

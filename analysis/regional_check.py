@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
-"""Where the ICOP reports come from, and a leave-one-region-out test (comment 6).
+"""Where the ICOP reports come from, and a leave-one-region-out test
+(second review round, comment 6).
 
-Reviewer comment 6: "The Faid et al. (2025, MJS) review shows that where the
-data come from strongly shapes a criterion. The authors should therefore show
-where the observations are located and test leaving one region out."
+The script places each report in a region from its coordinates, counts the
+reports by region and country, maps the report sites, and scores each region
+with both stages refitted on the other regions.
 
 Input: data/icop/crescent_features.csv,
 filtered as in 04_train_two_stage_crescent_criterion.py (4,470 first-crescent

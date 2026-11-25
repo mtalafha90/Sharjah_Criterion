@@ -110,7 +110,7 @@ The scripts in `analysis/` start from the archived files in `data/` and `models/
 | `minor_statistical_checks.py` | the checks of the third review round; needs `--hilalpy` |
 | `worked_example.py` | record counts, final model parameters, a worked example and the package versions |
 
-Figs. 3-5 come from `pipeline/05_choose_thresholds_and_plot_roc.py`, Fig. 12 is a photograph, and Table 1 defines the observed classes and the model categories. The notes at the top of most scripts name the reviewer comment they answer. Some notes, help texts and printed lines still use the table and figure numbers of earlier versions of the paper, and so does the name of `table1_criteria_comparison.py` (Table 1 of the first version is now Table 6), so use the numbers above.
+Figs. 3-5 come from `pipeline/05_choose_thresholds_and_plot_roc.py`, Fig. 12 is a photograph, and Table 1 defines the observed classes and the model categories. The notes at the top of most scripts name the review comment they answer (second review round; third round for `minor_statistical_checks.py`). Some notes, help texts and printed lines still use the table and figure numbers of earlier versions of the paper, and so does the name of `table1_criteria_comparison.py` (Table 1 of the first version is now Table 6), so use the numbers above.
 
 ## Results
 

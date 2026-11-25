@@ -1,12 +1,10 @@
 #!/usr/bin/env python3
-"""Probability contours of the final model over ARCV and ARCL (reviewer point 5).
+"""Probability contours of the final model over ARCV and ARCL
+(second review round, point 5).
 
-Reviewer: "Consider adding a visual representation of the model's probability
-boundaries. A probability-contour plot or a small set of decision-region plots
-illustrating the combined influence of relative altitude (ARCV), elongation
-(ARCL), and Moon lag time ... the predicted detectability and naked-eye
-probabilities could be illustrated across ARCV and ARCL for selected lag-time
-values, with the adopted probability thresholds indicated."
+The script draws P_det, P_eye and the operational bands of the final model
+over ARCV and ARCL at three fixed lag times, with the threshold lines marked.
+It also prints the numbers behind the figure.
 
 What the figure shows (probability_contours.png, 300 dpi, 6.5 in wide, no
 title). Nine panels with ARCL (0-25 deg) across and ARCV (-2 to 22 deg) up,

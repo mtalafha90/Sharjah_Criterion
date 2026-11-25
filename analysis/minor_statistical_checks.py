@@ -13,10 +13,10 @@
       sunset, 8 with moonset less than a minute after sunset): class distribution,
       observing means, and a sensitivity check that refits both stages without them
       (lunation-grouped five-fold cross-validation, main split and ten repeats).
-  (E) Daytime detections in the aided-only class (Comment 7, limitations): the 8
-      aided-only records of (D) and 27 others, filed as evening reports, whose
-      comments show that the crescent was detected only before sunset or in daylight;
-      the same sensitivity check without all 35.
+  (E) Daytime detections in the aided-only class (third review round, comment 7):
+      the 8 aided-only records of (D) and 27 others, filed as evening reports,
+      whose comments show that the crescent was detected only before sunset or
+      in daylight; the same sensitivity check without all 35.
 
 Data: data/icop and data/alrefay in this repository, and the HilalPy table (--hilalpy; see
 hilalpy_independent_check.py for where to obtain it).

@@ -1,12 +1,10 @@
 #!/usr/bin/env python3
-"""The model's output against the minimum-visibility records (reviewer comment 6).
+"""The model's output against the minimum-visibility records
+(second review round, comment 6).
 
-Reviewer: "Faid et al. report aided detections as low as ARCL ~ 4.6 to 4.7 deg
-and ARCV ~ 0.45 deg. In Fig. 8, Sharjah has ARCV = 7.5 deg and ARCL = 7.5 deg,
-which is above the lowest naked-eye record and above the MABIMS 2021 minima,
-yet the model says 'not detectable' (Pdet = 0.20). I would ask the authors to
-explain this, ideally by plotting the model's output against the
-minimum-visibility records."
+The script compares the final model's P_det for Sharjah on the evening of
+15 June 2026 with ICOP reports of similar geometry, with the lowest recorded
+sightings in the ICOP and HilalPy data, and with the MABIMS 2021 limits.
 
 Inputs:
   --icop        data/icop/crescent_features.csv;
@@ -76,7 +74,7 @@ SITE = ("Sharjah", 25.3463, 55.4209)
 EVENING = "2026/6/15"
 SUN_ALT_AT_SUNSET = -0.8333  # Sun's centre at sunset, as sun_alt_deg in the ICOP features
 PDET_LOW, PDET_HIGH, PEYE_LOW, PEYE_HIGH = 0.30, 0.50, 0.30, 0.60
-CENTRE = (7.5, 7.5, 40.0)  # ARCV, ARCL (deg) and lag (min) quoted by the reviewer, rounded
+CENTRE = (7.5, 7.5, 40.0)  # ARCV, ARCL (deg) and lag (min) of the Sharjah evening, rounded
 N_BOOT, BOOT_SEED = 2000, 42
 N_LIST, N_PLOT = 10, 20
 CLASS_NAME = {0: "not seen", 1: "aided only", 2: "naked eye"}

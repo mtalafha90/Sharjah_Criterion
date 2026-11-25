@@ -1,14 +1,10 @@
 #!/usr/bin/env python3
 """Data-selection flowchart: from the scraped ICOP reports to the modelling records
-(reviewer point 1).
+(second review round, point 1).
 
-Reviewer: "Provide a data-selection flowchart or summary table ... show the
-progression from approximately 7,100 raw ICOP reports to approximately 6,100
-usable records and the final 4,470 observations used for modelling, together
-with the principal exclusion criteria and the distribution of the three
-original observation classes. Where the information is available, a brief
-indication of the geographical and temporal coverage and the availability of
-explicit observation times would further improve transparency."
+The script counts the reports kept and removed at each step of the selection,
+with their classes and lunations, and works out the coverage of the modelling
+records. It prints these numbers and draws them in one figure.
 
 What the figure shows:
   - left column: the records kept after each step (scraped, cleaned, feature

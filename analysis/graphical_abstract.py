@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""Graphical abstract from the real outputs (reviewer comment 6).
+"""Graphical abstract from the real outputs (second review round, comment 6).
 
-Reviewer: the scatter plots and the globe of the old graphical abstract are
-schematic, and its numbers are old.
+The script draws the three-panel graphical abstract and saves it as a PNG file
+at 300 dpi.
 
 Panels (Elsevier: at least 1328 x 531 px, about 2.5:1, readable when small):
   left    the pipeline: ICOP reports -> ARCV, ARCL and lag at local sunset ->

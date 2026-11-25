@@ -1,17 +1,10 @@
 #!/usr/bin/env python3
-"""Threshold choice, error rates and calibration by band (reviewer comment 7).
+"""Threshold choice, error rates and calibration by band
+(second review round, comment 7).
 
-Comment 7 (statistical review) asks:
-  "Please pick the thresholds using training data or cross-validation,
-  ideally nested, and then evaluate once on untouched data. The Youden-J and
-  maximum-F1 thresholds that were found should be reported. The final values
-  (0.30, 0.50 and 0.60) are described as 'practical', so please explain what
-  error rates or costs they represent and how uncertain they are, for
-  instance with a bootstrap."
-  "... the observed fraction of detected or naked-eye cases in each band of
-  Eq. 16 [Eq. 11 of the revised manuscript], with the number of records in each band ... Because the training
-  data are not a random sample of real '29th evening' situations, a value
-  such as 0.60 may not mean a 60% chance in practice."
+This script checks the choice of the probability thresholds of both stages,
+the error rates at the adopted thresholds, and how the predicted probabilities
+compare with the observed fractions in each band of Eq. 11.
 
 Inputs (default paths in this repository):
   data/icop/crescent_features.csv          the modelling subset (4,470

@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
-"""Performance of the two-stage criterion within subgroups (reviewer comment 7).
+"""Performance of the two-stage criterion within subgroups
+(second review round, comment 7).
 
-Comment 7 (statistical review):
-  "It would also be informative to report performance by region or latitude
-  band, by season, by observer type or aid, and before versus after a chosen
-  year."
+The script scores both stages and the three-class cascade in subgroups of the
+modelling records: by latitude, hemisphere, season, means tried, period and
+Hijri month. For three two-way splits, it also gives the difference between
+the two subgroups.
 
 Leave-one-region-out refitting is reported separately (regional_check.py).
 Here no model is refitted: the out-of-fold predictions of the main evaluation
