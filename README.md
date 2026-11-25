@@ -6,152 +6,25 @@ A two-stage empirical criterion for lunar crescent visibility, built from the re
 
 This repository holds the data, the pipeline that builds the model, the final models, and the analysis scripts that reproduce every table and figure of the paper *Sharjah criterion for lunar crescent visibility* (submitted to *Astronomy and Computing*).
 
-## Repository structure
+## Contents
 
-```
-Sharjah_Criterion/
-├── pipeline/          build the data set and the model (steps 01-05), and compare it with the Alrefay tables
-├── analysis/          reproduce the tables and figures of the paper
-├── data/
-│   ├── icop/          ICOP reports, their geometry at sunset, and the out-of-fold predictions
-│   └── alrefay/       Alrefay et al. (2018) Tables I-VI and the row-by-row comparison
-├── models/            final Stage 1 and Stage 2 models, their metadata, the training report and the thresholds
-├── figures/           the figures of the paper
-├── docs/              crescent visibility report for 17 May 2026 (Sharjah)
-├── requirements.txt   package versions used
-├── CITATION.cff       citation metadata
-└── LICENSE
-```
-
-Every script finds its default input and output files from its own location. The commands in this README are written for the repository root.
-
-## Data
-
-`data/icop/`
-
-| File | Written by | Records | Content |
-|---|---|---|---|
-| `crescent_observations_raw.csv` | `pipeline/01` | 7,154 | reports scraped from the ICOP pages |
-| `crescent_observations_clean.csv` | `pipeline/02` | 7,124 | reports with a usable outcome and an observed class |
-| `crescent_observations_rejected.csv` | `pipeline/02` | 30 | reports without a usable outcome |
-| `crescent_features.csv` | `pipeline/03`, `03b` | 6,092 | geocoded reports with the geometry at local sunset |
-| `two_stage_oof_predictions.csv` | `pipeline/04` | 4,470 | out-of-fold P<sub>det</sub> and P<sub>eye</sub> of the modelling records |
-| `two_stage_stage1_predictions.csv` | `pipeline/04` | 4,470 | out-of-fold Stage 1 predictions |
-| `two_stage_stage2_predictions.csv` | `pipeline/04` | 2,151 | out-of-fold Stage 2 predictions (sightings only) |
-
-Observed classes: 0 = not seen, 1 = seen with optical aid only, 2 = seen with the naked eye. Personal phone numbers that observers wrote in their reports are replaced by `[number removed]`; observers' names are kept as published on the ICOP pages.
-
-`data/alrefay/`: Tables I-VI of Alrefay et al. (2018), transcribed from the scanned paper (see `data/alrefay/README.txt`, which also lists the values corrected in November 2026), and the row-by-row comparison written by `pipeline/compare_twostep_with_alrefay_rowwise.py` (425 usable records, 265 of them sightings).
-
-## Models
-
-`models/` holds the outputs of `pipeline/04` and `pipeline/05`:
-
-- `stage1_detectability_model.joblib` and `stage2_naked_eye_model.joblib`: the final scikit-learn pipelines (median imputation, standardisation, logistic regression), fitted with scikit-learn 1.9.1: Stage 1 on all 4,470 modelling records and Stage 2 on the 2,151 sightings among them;
-- `two_stage_model_meta.json`: predictors and thresholds of the two stages;
-- `two_stage_crescent_criterion_report.json`: cross-validated scores and coefficients;
-- `chosen_thresholds.json`: the threshold candidates of `pipeline/05`.
-
-The predictors are evaluated at local sunset:
-
-| Predictor | Description |
+| Folder | Content |
 |---|---|
-| `relative_altitude_deg` | ARCV: altitude of the Moon minus altitude of the Sun |
-| `elongation_deg` | ARCL: angular separation of the Moon and the Sun |
-| `moon_lag_minutes` | lag time: moonset minus sunset (negative if the Moon had already set) |
+| [`pipeline/`](pipeline/README.md) | build the data set and the model (steps 01-05), and compare it with the Alrefay tables |
+| [`analysis/`](analysis/README.md) | reproduce the tables and figures of the paper |
+| [`data/`](data/README.md) | ICOP reports and Alrefay et al. (2018) tables, with the predictions and comparisons |
+| [`models/`](models/README.md) | final Stage 1 and Stage 2 models, their metadata and their performance |
+| `figures/` | the figures of the paper |
+| `docs/` | crescent visibility report for 17 May 2026 (Sharjah) |
 
-## Pipeline
+`requirements.txt` lists the package versions used.
 
-1. **Scrape** (`01_scrape_iac_crescent_reports.py`): collect the reports from the ICOP pages at [astronomycenter.net](https://astronomycenter.net).
-2. **Clean** (`02_clean_crescent_observations.py`): standardise the text and dates, assign the observed class and reject reports without a usable outcome.
-3. **Build features** (`03_build_crescent_features.py`): geocode the sites and compute the geometry at local sunset; `03b_correct_moon_lag.py` then recomputes the lag time where the Moon had already set at sunset or no moonset was found.
-4. **Train** (`04_train_two_stage_crescent_criterion.py`): fit the two logistic stages. Performance is estimated by five-fold cross-validation grouped by lunation (one ICOP monthly page), so reports from the same new moon are never in both the training and the test folds. The final models are fitted on all the modelling records: Stage 1 on the 4,470 records and Stage 2 on the 2,151 sightings among them.
-5. **Thresholds** (`05_choose_thresholds_and_plot_roc.py`): ROC, threshold and calibration figures (Figs. 3-5 of the paper) and the threshold candidates.
-
-External check: `compare_twostep_with_alrefay_rowwise.py` applies the saved models to the Alrefay tables.
+## Quick start
 
 ```bash
 python3 -m pip install -r requirements.txt
-python3 pipeline/01_scrape_iac_crescent_reports.py      # needs internet access
-python3 pipeline/02_clean_crescent_observations.py
-python3 pipeline/03_build_crescent_features.py          # slow; see Known issues
-python3 pipeline/03b_correct_moon_lag.py
-python3 pipeline/04_train_two_stage_crescent_criterion.py
-python3 pipeline/05_choose_thresholds_and_plot_roc.py
-python3 pipeline/compare_twostep_with_alrefay_rowwise.py
+python3 analysis/worked_example.py    # record counts, final model parameters and a worked example
 ```
-
-Steps 02, 03b, 04, 05 and the Alrefay comparison reproduce the archived data, models and reports exactly. To reproduce the paper, skip steps 01 and 03. Step 01 needs `requests` and `beautifulsoup4`, which `requirements.txt` does not install, and it overwrites `data/icop/crescent_observations_raw.csv` with the reports now on the ICOP pages, so the record counts no longer match the paper. Step 03 cannot be run from this repository (see Known issues).
-
-## Analysis scripts
-
-The scripts in `analysis/` start from the archived files in `data/` and `models/` and print the numbers given in the paper; the figure scripts write to `figures/`. Run them from the repository root, for example `python3 analysis/statistical_checks.py`. The first run of `regional_check.py`, `data_selection_flowchart.py`, `visibility_maps.py` or `graphical_abstract.py` needs internet access, because cartopy then downloads the Natural Earth country borders and coastlines. Figures redrawn on another system can differ slightly in how text and lines are rendered. Four scripts also need the HilalPy sighting database: the file `Final 30.6.2023.csv` of the Mendeley Data deposit [10.17632/rs994bxgc4.1](https://doi.org/10.17632/rs994bxgc4.1) (CC BY 4.0), passed with `--hilalpy` (or `--input` for `hilalpy_independent_check.py`).
-
-| Script | Reproduces |
-|---|---|
-| `data_selection_flowchart.py` | Fig. 1 (data selection) |
-| `data_attrition_and_negatives.py` | Sections 2.1-2.2: record losses and the meaning of non-sightings |
-| `sky_geometry_schematic.py` | Fig. 2 (sky geometry at sunset) |
-| `threshold_and_calibration_checks.py` | Fig. 6 (calibration by band); threshold choice and error rates |
-| `ordinal_model_comparison.py` | Table 2 (three-class models), except the HilalPy columns, which `hilalpy_independent_check.py` prints in its section [6] |
-| `class_weight_cascade_check.py` | the full cascade and class weights (Section 3.4) |
-| `confusion_matrices.py` | Fig. 7 (confusion matrices) |
-| `probability_contours.py` | Fig. 8 (probability contours) |
-| `statistical_checks.py` | Table 3 (coefficients and intervals), Fig. 9 (precision-recall curves), the Alrefay check (Section 3.8) |
-| `predictor_ablation.py` | Table 4 (predictor ablation); run with `data/icop/crescent_features.csv` as argument |
-| `regional_check.py` | Fig. 10 (station map) and the leave-one-region-out test |
-| `observation_time_sensitivity.py`, `subgroup_performance.py` | sensitivity to observation time, region and subgroup (Section 3.6) |
-| `visibility_maps.py` | Figs. 11, 13 and 15 (visibility maps) |
-| `minimum_visibility_check.py` | Fig. 14 (minimum-visibility records); needs `--hilalpy` |
-| `hilalpy_independent_check.py` | Table 5 (independent check on HilalPy); needs `--input` |
-| `table1_criteria_comparison.py` | Table 6 and Fig. 16 (comparison with classical criteria); run with `--sample model --include-alternatives --figure figures/criteria_comparison.png` |
-| `calendar_criteria_benchmark.py` | Table 7 (calendar rules); run with `data/icop/crescent_features.csv` as argument |
-| `graphical_abstract.py` | graphical abstract; `--hilalpy` fills in the HilalPy values |
-| `minor_statistical_checks.py` | the checks of the third review round; needs `--hilalpy` |
-| `worked_example.py` | record counts, final model parameters, a worked example and the package versions |
-
-Figs. 3-5 come from `pipeline/05_choose_thresholds_and_plot_roc.py`, Fig. 12 is a photograph, and Table 1 defines the observed classes and the model categories. The notes at the top of most scripts name the review comment they answer (second review round; third round for `minor_statistical_checks.py`). Some notes, help texts and printed lines still use the table and figure numbers of earlier versions of the paper, and so does the name of `table1_criteria_comparison.py` (Table 1 of the first version is now Table 6), so use the numbers above.
-
-## Results
-
-Cross-validation grouped by lunation (out-of-fold, 4,470 records; accuracy at a cut-off of 0.50):
-
-| Stage | Task | Accuracy | ROC AUC | Majority-class accuracy |
-|---|---|---|---|---|
-| Stage 1 | detectability (seen by any means or not) | 0.794 | 0.877 | 0.519 |
-| Stage 2 | naked eye or optical aid only (sightings) | 0.896 | 0.927 | 0.765 |
-
-External checks with the final models:
-
-- Alrefay et al. (2018) tables, at the operational thresholds (P<sub>det</sub> ≥ 0.50 for Stage 1 and P<sub>eye</sub> ≥ 0.60 for Stage 2): Stage 1 agrees with 86.6 % of the 425 usable records, and Stage 2 with 90.6 % of the 265 sightings.
-- HilalPy database (1,365 independent evening records): ROC AUC 0.883 for Stage 1 and 0.886 for Stage 2.
-
-## Known issues
-
-- **Monday reports are missing from the feature table.** `pipeline/03_build_crescent_features.py` removes the weekday from the Arabic date before parsing it, but its list of weekday names has only one spelling of Monday (`الاثنين`), while the ICOP pages write `الإثنين`. The date of every Monday report therefore fails to parse, and these reports are skipped. This removed 981 of the 7,124 cleaned reports (734 of them first-crescent reports made after sunset). The lost reports have the same class shares as those kept and do not differ by year, region or latitude, so the loss is not related to visibility. The archived `crescent_features.csv` and every result derived from it do not include these reports.
-- **Step 3 needs a module that is not in this repository.** `pipeline/03_build_crescent_features.py` imports `moon_phases_core`, which is not included here, so step 3 cannot be rerun from this repository alone. Its output, `data/icop/crescent_features.csv`, is archived, and steps 3b to 5 start from it.
-
-## Data sources
-
-- **ICOP archive**: Islamic Crescents' Observation Project, [astronomycenter.net](https://astronomycenter.net). Reports from October 2009 to April 2026.
-- **Alrefay et al. (2018)**: Tables I-VI of the paper (Tables I-III by text recognition of 600-dpi page images, Tables IV-VI typed by hand). See `data/alrefay/README.txt`.
-- **HilalPy**: Faid, M. S., Mohd Nawawi, M. S. A. and Mohd Saadon, M. H. (2023). *Hilalpy: Database of Lunar Crescent Sighting*. Mendeley Data, version 1. https://doi.org/10.17632/rs994bxgc4.1 (not included here).
-
-## References
-
-- Alrefay, T., Alsaab, S., Alshehri, F., Alghamdi, A., Hadadi, A., Alotaibi, M., Almutari, K., & Mubarki, Y. (2018). Analysis of observations of earliest visibility of the lunar crescent. *The Observatory*, **138**, 267-291. [ADS: 2018Obs...138..267A](https://ui.adsabs.harvard.edu/abs/2018Obs...138..267A)
-- Yallop, B. D. (1997). *A method for predicting the first sighting of the new crescent moon*. NAO Technical Note No. 69. HM Nautical Almanac Office, Royal Greenwich Observatory.
-- Fotheringham, J. K. (1910). On the smallest visible phase of the Moon. *Monthly Notices of the Royal Astronomical Society*, **70**(7), 527-531.
-- Maunder, E. W. (1911). On the smallest visible phase of the Moon. *Journal of the British Astronomical Association*, **21**, 355-362.
-
-## Versions
-
-| Version | Date | DOI | Notes |
-|---|---|---|---|
-| 1.1.0 | 25 November 2026 | [10.5281/zenodo.24529092](https://doi.org/10.5281/zenodo.24529092) | lag times and Alrefay values corrected; model refitted and evaluated by lunation; analysis scripts of the paper; new folder layout ([release notes](https://github.com/mtalafha90/Sharjah_Criterion/releases/tag/v1.1.0)) |
-| 1.0.0 | 19 June 2026 | [10.5281/zenodo.20755360](https://doi.org/10.5281/zenodo.20755360) | first archived version (git tag `Crescent`) |
-
-Version 1.1.0 moved the files into new folders. The release notes show where each file of version 1.0.0 is now.
 
 ## How to cite
 
@@ -159,9 +32,14 @@ If you use this code or data, please cite:
 
 > Talafha, M. (2026). *Sharjah Criterion: A Two-Stage Empirical Lunar Crescent Visibility Model*. Zenodo. https://doi.org/10.5281/zenodo.20755359
 
-This DOI always points to the latest archived version. To cite the exact version you used, give its own DOI (see Versions): for version 1.1.0, [10.5281/zenodo.24529092](https://doi.org/10.5281/zenodo.24529092).
+This DOI always points to the latest version. To cite the exact version you used, give its own DOI:
 
-BibTeX:
+| Version | Date | DOI |
+|---|---|---|
+| 1.1.0 | 25 November 2026 | [10.5281/zenodo.24529092](https://doi.org/10.5281/zenodo.24529092) |
+| 1.0.0 | 19 June 2026 | [10.5281/zenodo.20755360](https://doi.org/10.5281/zenodo.20755360) |
+
+The [release notes](https://github.com/mtalafha90/Sharjah_Criterion/releases) list the changes in each version; version 1.1.0 moved the files into the folders above.
 
 ```bibtex
 @software{talafha_2026_sharjah_criterion,
@@ -176,4 +54,4 @@ BibTeX:
 
 ## Licence
 
-MIT — see [LICENSE](LICENSE). The MIT licence covers the code and the files it produces. The report in `docs/` is © 2026 Mohammed H. Talafha, all rights reserved, and is included for reference. The ICOP report texts and the Alrefay et al. (2018) tables come from the sources listed under Data sources, and their terms apply.
+MIT — see [LICENSE](LICENSE). It covers the code and the files it produces. The report in `docs/` is © 2026 Mohammed H. Talafha, all rights reserved. The ICOP report texts and the Alrefay et al. (2018) tables keep the terms of their sources (see [`data/`](data/README.md)).
