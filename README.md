@@ -23,7 +23,7 @@ Sharjah_Criterion/
 └── LICENSE
 ```
 
-Every script finds its files from its own location, so it can be run from any folder.
+Every script finds its default input and output files from its own location. The commands in this README are written for the repository root.
 
 ## Data
 
@@ -47,7 +47,7 @@ Observed classes: 0 = not seen, 1 = seen with optical aid only, 2 = seen with th
 
 `models/` holds the outputs of `pipeline/04` and `pipeline/05`:
 
-- `stage1_detectability_model.joblib` and `stage2_naked_eye_model.joblib`: the final scikit-learn pipelines (median imputation, standardisation, logistic regression), fitted on all 4,470 modelling records with scikit-learn 1.9.1;
+- `stage1_detectability_model.joblib` and `stage2_naked_eye_model.joblib`: the final scikit-learn pipelines (median imputation, standardisation, logistic regression), fitted with scikit-learn 1.9.1: Stage 1 on all 4,470 modelling records and Stage 2 on the 2,151 sightings among them;
 - `two_stage_model_meta.json`: predictors and thresholds of the two stages;
 - `two_stage_crescent_criterion_report.json`: cross-validated scores and coefficients;
 - `chosen_thresholds.json`: the threshold candidates of `pipeline/05`.
@@ -65,7 +65,7 @@ The predictors are evaluated at local sunset:
 1. **Scrape** (`01_scrape_iac_crescent_reports.py`): collect the reports from the ICOP pages at [astronomycenter.net](https://astronomycenter.net).
 2. **Clean** (`02_clean_crescent_observations.py`): standardise the text and dates, assign the observed class and reject reports without a usable outcome.
 3. **Build features** (`03_build_crescent_features.py`): geocode the sites and compute the geometry at local sunset; `03b_correct_moon_lag.py` then recomputes the lag time where the Moon had already set at sunset or no moonset was found.
-4. **Train** (`04_train_two_stage_crescent_criterion.py`): fit the two logistic stages. Performance is estimated by five-fold cross-validation grouped by lunation (one ICOP monthly page), so reports from the same new moon are never in both the training and the test folds. The final models are fitted on all 4,470 modelling records.
+4. **Train** (`04_train_two_stage_crescent_criterion.py`): fit the two logistic stages. Performance is estimated by five-fold cross-validation grouped by lunation (one ICOP monthly page), so reports from the same new moon are never in both the training and the test folds. The final models are fitted on all the modelling records: Stage 1 on the 4,470 records and Stage 2 on the 2,151 sightings among them.
 5. **Thresholds** (`05_choose_thresholds_and_plot_roc.py`): ROC, threshold and calibration figures (Figs. 3-5 of the paper) and the threshold candidates.
 
 External check: `compare_twostep_with_alrefay_rowwise.py` applies the saved models to the Alrefay tables.
@@ -144,13 +144,22 @@ External checks with the final models:
 - Fotheringham, J. K. (1910). On the smallest visible phase of the Moon. *Monthly Notices of the Royal Astronomical Society*, **70**(7), 527-531.
 - Maunder, E. W. (1911). On the smallest visible phase of the Moon. *Journal of the British Astronomical Association*, **21**, 355-362.
 
+## Versions
+
+| Version | Date | DOI | Notes |
+|---|---|---|---|
+| 1.1.0 | 25 November 2026 | [10.5281/zenodo.24529092](https://doi.org/10.5281/zenodo.24529092) | lag times and Alrefay values corrected; model refitted and evaluated by lunation; analysis scripts of the paper; new folder layout ([release notes](https://github.com/mtalafha90/Sharjah_Criterion/releases/tag/v1.1.0)) |
+| 1.0.0 | 19 June 2026 | [10.5281/zenodo.20755360](https://doi.org/10.5281/zenodo.20755360) | first archived version (git tag `Crescent`) |
+
+Version 1.1.0 moved the files into new folders. The release notes show where each file of version 1.0.0 is now.
+
 ## How to cite
 
 If you use this code or data, please cite:
 
 > Talafha, M. (2026). *Sharjah Criterion: A Two-Stage Empirical Lunar Crescent Visibility Model*. Zenodo. https://doi.org/10.5281/zenodo.20755359
 
-This DOI always points to the latest archived version. To cite the exact version you used, take its own DOI from the Zenodo page.
+This DOI always points to the latest archived version. To cite the exact version you used, give its own DOI (see Versions): for version 1.1.0, [10.5281/zenodo.24529092](https://doi.org/10.5281/zenodo.24529092).
 
 BibTeX:
 
