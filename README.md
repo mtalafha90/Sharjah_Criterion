@@ -18,7 +18,6 @@ Sharjah_Criterion/
 ├── models/            final Stage 1 and Stage 2 models, their metadata, the training report and the thresholds
 ├── figures/           the figures of the paper
 ├── docs/              crescent visibility report for 17 May 2026 (Sharjah)
-├── legacy/            outputs of the first version, not used by the current scripts
 ├── requirements.txt   package versions used
 ├── CITATION.cff       citation metadata
 └── LICENSE
