@@ -13,6 +13,10 @@
       sunset, 8 with moonset less than a minute after sunset): class distribution,
       observing means, and a sensitivity check that refits both stages without them
       (lunation-grouped five-fold cross-validation, main split and ten repeats).
+  (E) Daytime detections in the aided-only class (Comment 7, limitations): the 8
+      aided-only records of (D) and 27 others, filed as evening reports, whose
+      comments show that the crescent was detected only before sunset or in daylight;
+      the same sensitivity check without all 35.
 
 Data: data/icop and data/alrefay in this repository, and the HilalPy table (--hilalpy; see
 hilalpy_independent_check.py for where to obtain it).
@@ -244,32 +248,111 @@ def part_d(model):
     aids = nons[["attempted_binocular", "attempted_telescope", "attempted_camera"]].fillna(False).astype(bool)
     print(f"\nNon-sightings among them: {len(nons)}; an optical aid tried in {int(aids.any(axis=1).sum())}")
 
+    full = sensitivity_header(model)
+    for lab, mask in [("without the 82 (moonset before sunset)", groups["moonset before sunset"]),
+                      ("without all 90 negative lags", neg)]:
+        refit_without(model, full, lab, mask.to_numpy())
+
+
+def row(label, sc, n):
+    print(f"{label:58s} {n:5d} " + " ".join(f"{sc[k]:7.3f}" for k in ["S1 acc", "S1 AUC", "S2 acc", "S2 AUC"])
+          + f" {sc['3-class']:8.3f}")
+
+
+def sensitivity_header(model):
+    """Print the table head and the scores of all records; return the main-split probabilities."""
     print("\nSensitivity: both stages refitted without these records (out-of-fold, same pipeline).")
     print(f"{'Variant':58s} {'n':>5s} {'S1 acc':>7s} {'S1 AUC':>7s} {'S2 acc':>7s} {'S2 AUC':>7s} {'3-class':>8s}")
     full = oof(model, MAIN_SEED)
     saved = pd.read_csv(DATA / "two_stage_oof_predictions.csv")
     print(f"(check: max |P_det - saved| = {np.max(np.abs(full[0] - saved['p_det'])):.1e})")
+    row("All records, main split", scores(model[TARGET].to_numpy(int), *full), len(model))
+    return full
+
+
+def refit_without(model, full, lab, mask):
+    """Scores on the records outside mask, of models fitted with and without the masked records.
+
+    Returns the largest absolute change in any score (main split, and mean of the ten repeats).
+    """
     y = model[TARGET].to_numpy(int)
+    keep = ~mask
+    with_main = scores(y[keep], full[0][keep], full[1][keep])
+    row(f"  model with them, scored on the rest", with_main, keep.sum())
+    sub = model[keep].reset_index(drop=True)
+    without_main = scores(sub[TARGET].to_numpy(int), *oof(sub, MAIN_SEED))
+    row(f"  model {lab}", without_main, len(sub))
+    rep_full, rep_sub = [], []
+    for seed in CV_SEEDS:
+        pf = oof(model, seed)
+        rep_full.append(scores(y[keep], pf[0][keep], pf[1][keep]))
+        rep_sub.append(scores(sub[TARGET].to_numpy(int), *oof(sub, seed)))
+    means = []
+    for name, rep in [("    10 repeats, with them (scored on the rest)", rep_full),
+                      ("    10 repeats, without them", rep_sub)]:
+        means.append({k: np.mean([r[k] for r in rep]) for k in rep[0]})
+        row(name, means[-1], keep.sum())
+    return max(max(abs(with_main[k] - without_main[k]) for k in with_main),
+               max(abs(means[0][k] - means[1][k]) for k in means[0]))
 
-    def row(label, sc, n):
-        print(f"{label:58s} {n:5d} " + " ".join(f"{sc[k]:7.3f}" for k in ["S1 acc", "S1 AUC", "S2 acc", "S2 AUC"])
-              + f" {sc['3-class']:8.3f}")
 
-    row("All records, main split", scores(y, *full), len(y))
-    for lab, mask in [("without the 82 (moonset before sunset)", groups["moonset before sunset"]),
-                      ("without all 90 negative lags", neg)]:
-        keep = ~mask.to_numpy()
-        row(f"  model with them, scored on the rest", scores(y[keep], full[0][keep], full[1][keep]), keep.sum())
-        sub = model[keep].reset_index(drop=True)
-        row(f"  model {lab}", scores(sub[TARGET].to_numpy(int), *oof(sub, MAIN_SEED)), len(sub))
-        rep_full, rep_sub = [], []
-        for seed in CV_SEEDS:
-            pf = oof(model, seed)
-            rep_full.append(scores(y[keep], pf[0][keep], pf[1][keep]))
-            rep_sub.append(scores(sub[TARGET].to_numpy(int), *oof(sub, seed)))
-        for name, rep in [("    10 repeats, with them (scored on the rest)", rep_full),
-                          ("    10 repeats, without them", rep_sub)]:
-            row(name, {k: np.mean([r[k] for r in rep]) for k in rep[0]}, keep.sum())
+# ---------------------------------------------------------------- (E)
+# Aided-only modelling records, filed as evening reports with a positive lag time, whose
+# comments show that the crescent was detected only before sunset or in daylight:
+# (date as written in the archive, city, a phrase of the comment that shows it).
+DAYTIME_ONLY = [
+    ("06 أكتوبر 2013", "Munich", "had to try daytime observation again"),
+    ("09 يونيو 2013", "Susa", "This is a daylight observation"),
+    ("31 يوليو 2011", "Esfahan", "It was seen at daytime from 12:43 to 17:40 LT (Sunset 20:11)"),
+    ("31 يوليو 2011", "Doha", "seen by CCD imaging only (during daytime)"),
+    ("04 مايو 2011", "Musaffah", "from 10 am till 06 pm"),
+    ("07 أغسطس 2013", "Surakarta", "This crescent was not seen after sunset. It was seen at daytime."),
+    ("07 أغسطس 2013", "Ardakan", "This crescent was not seen after sunset. It was only seen at daytime."),
+    ("07 أغسطس 2013", "Amman", "we couldn't see it after sunset even by CCD imaging"),
+    ("14 نوفمبر 2012", "Munich", "could not stay till the evening"),
+    ("28 سبتمبر 2011", "Abu-Dhabi", "Crescent was seen by CCD imaging before sunset only"),
+    ("30 أبريل 2014", "Al-Fulaij Observatory", "08:44 AM"),
+    ("09 يوليو 2013", "Munich", "till just before sunset, when the crescent vanished behind some trees"),
+    ("09 يوليو 2013", "Bojnord", "seen in daylight time by telescope"),
+    ("12 مارس 2013", "أبوظبي", "The Sun didn't set yet"),
+    ("06 سبتمبر 2013", "Mashhad", "This crescent was seen by telescope before Sunset"),
+    ("14 ديسمبر 2012", "Munich", "no chance to observe after sunset"),
+    ("20 يوليو 2012", "Taft", "few hour before sunset"),
+    ("19 يوليو 2012", "Makkah", "there was no success after sunset"),
+    ("21 يونيو 2012", "Munich", "about 90 minutes BEFORE sunset"),
+    ("29 مايو 2014", "الفقرة", "الساعة 07:30 صباحا"),
+    ("11 مايو 2013", "Abu Dhabi", "This is a daylight observation"),
+    ("28 يونيو 2014", "Munich", "no chance to observe after sunset"),
+    ("28 يونيو 2014", "Abu Dhabi", "This crescent was seen at daytime NOT after sunset"),
+    ("09 يوليو 2013", "Blacksburg", "I left the location prior to sunset"),
+    ("08 أكتوبر 2010", "Blacksburg", "My last sighting was at 4:25 pm"),
+    ("10 يناير 2016", "al figrah", "after sunset I tried to see it throgh my telescopes but it does not appear"),
+    ("31 يوليو 2011", "Taft (my personal observatory)", "The last time of sighting of the crescent was 18:15"),
+]
+
+
+def part_e(model):
+    print("\n" + "=" * 90 + "\n(E) Daytime detections filed as evening reports (aided-only class)\n" + "=" * 90)
+    model = model.reset_index(drop=True)
+    aided = model[TARGET] == 1
+    text = model["comment_text"].fillna("")
+    daytime = pd.Series(False, index=model.index)
+    for date, city, phrase in DAYTIME_ONLY:
+        hit = (aided & model["gregorian_date"].str.contains(date, regex=False) & (model["city"] == city)
+               & text.str.contains(phrase, regex=False))
+        if hit.sum() != 1:
+            raise ValueError(f"{date}, {city}: {int(hit.sum())} matching records")
+        daytime |= hit
+    neg = aided & (model["moon_lag_minutes"] < 0)
+    print(f"Aided-only modelling records: {int(aided.sum())}. Detections only before sunset or in daylight: "
+          f"{int(neg.sum())} with a negative lag time (part D) and {int(daytime.sum())} with a positive lag time "
+          f"whose comments show it.")
+    with pd.option_context("display.width", 250):
+        print(model.loc[daytime, ["gregorian_date", "country", "city", "moon_lag_minutes"]].to_string())
+    both = (daytime | neg).to_numpy()
+    full = sensitivity_header(model)
+    change = refit_without(model, full, f"without these {int(both.sum())} records", both)
+    print(f"Largest change in any score (main split or mean of ten repeats): {change:.4f}")
 
 
 def main():
@@ -286,6 +369,7 @@ def main():
     part_b(args.hilalpy)
     part_c(model)
     part_d(model)
+    part_e(model)
 
 
 if __name__ == "__main__":

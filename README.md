@@ -2,7 +2,7 @@
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.20755359.svg)](https://doi.org/10.5281/zenodo.20755359)
 
-A two-stage empirical criterion for lunar crescent visibility, built from the reports of the International Crescent Observation Project (ICOP). Stage 1 gives the probability that the crescent is seen at all (P<sub>det</sub>); Stage 2 gives, for a sighting, the probability that it was seen with the naked eye (P<sub>eye</sub>). The criterion is checked against the published observations of Alrefay et al. (2018) and the HilalPy sighting database, and compared with classical visibility criteria.
+A two-stage empirical criterion for lunar crescent visibility, built from the reports of the Islamic Crescents' Observation Project (ICOP). Stage 1 gives the probability that the crescent is seen at all (P<sub>det</sub>); Stage 2 gives, for a sighting, the probability that it was seen with the naked eye (P<sub>eye</sub>). The criterion is checked against the published observations of Alrefay et al. (2018) and the HilalPy sighting database, and compared with classical visibility criteria.
 
 This repository holds the data, the pipeline that builds the model, the final models, and the analysis scripts that reproduce every table and figure of the paper *Sharjah criterion for lunar crescent visibility* (submitted to *Astronomy and Computing*).
 
@@ -134,7 +134,7 @@ External checks with the final models:
 
 ## Data sources
 
-- **ICOP archive**: International Crescent Observation Project, [astronomycenter.net](https://astronomycenter.net). Reports from October 2009 to April 2026.
+- **ICOP archive**: Islamic Crescents' Observation Project, [astronomycenter.net](https://astronomycenter.net). Reports from October 2009 to April 2026.
 - **Alrefay et al. (2018)**: Tables I-VI of the paper (Tables I-III by text recognition of 600-dpi page images, Tables IV-VI typed by hand). See `data/alrefay/README.txt`.
 - **HilalPy**: Faid, M. S., Mohd Nawawi, M. S. A. and Mohd Saadon, M. H. (2023). *Hilalpy: Database of Lunar Crescent Sighting*. Mendeley Data, version 1. https://doi.org/10.17632/rs994bxgc4.1 (not included here).
 
