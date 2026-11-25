@@ -68,7 +68,7 @@ def contradiction_rates(y, flag, codes, counts, interval):
 def main():
     parser = argparse.ArgumentParser(
         description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument("csv", help="Path to crescent_features.csv in the data/code repository")
+    parser.add_argument("csv", help="Path to data/icop/crescent_features.csv")
     parser.add_argument("--oof", help="two_stage_oof_predictions.csv from script 04 "
                                       "(default: next to crescent_features.csv)")
     args = parser.parse_args()

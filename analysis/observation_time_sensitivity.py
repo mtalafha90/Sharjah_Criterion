@@ -60,7 +60,7 @@ The column '0 arch.' uses the archive values (relative_altitude_deg,
 elongation_deg) instead of the PyEphem recomputation; it reproduces the
 published scores and coefficients.
 
-Run: python3 -W ignore observation_time_sensitivity.py   (well under a minute)
+Run: python3 -W ignore analysis/observation_time_sensitivity.py   (well under a minute)
 """
 import argparse
 import math

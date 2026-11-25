@@ -62,9 +62,9 @@ alternative models of --include-alternatives are not drawn. The script prints
 the drawn values. Reviewer point 4 (round 2) asked for the approaches, the
 metrics and their evaluation bases to be clearly distinguished, with intervals.
 
-Run (writes criteria_comparison.png, 300 dpi, 6.5 in wide):
-  python3 -W ignore -I -B table1_criteria_comparison.py --sample model \\
-      --include-alternatives --figure ../figures/criteria_comparison.png
+Run from the repository root (writes figures/criteria_comparison.png, 300 dpi, 6.5 in wide):
+  python3 -W ignore -I -B analysis/table1_criteria_comparison.py --sample model \\
+      --include-alternatives --figure figures/criteria_comparison.png
 """
 import argparse
 import warnings

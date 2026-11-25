@@ -66,7 +66,7 @@ Sections
      would change if the share of sightings differed from the ICOP share.
      Figure calibration_by_band.png (300 dpi, no title).
 
-Run: python3 -W ignore threshold_and_calibration_checks.py   (about one minute)
+Run: python3 -W ignore analysis/threshold_and_calibration_checks.py   (about one minute)
 """
 import argparse
 from pathlib import Path

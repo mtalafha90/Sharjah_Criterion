@@ -10,7 +10,7 @@ Included files:
 
 Notes:
 - The PDF is scanned/image-only. Tables I, II and III were OCR-extracted from 600-dpi page renders and include a raw_ocr_line column for checking against the source.
-- OCR sometimes confuses the printed decimal dot with degree signs, hyphens, or letters. Parsed columns were normalized to periods where possible.
+- OCR sometimes confuses the printed decimal point with degree signs, hyphens, or letters. Parsed columns were normalised to decimal points where possible.
 - Tables IV, V and VI were manually checked/transcribed from the page images because they are short.
 - Please verify any critical numeric values against the original page images/PDF before publication-grade use.
 

@@ -40,7 +40,7 @@ The operational rule is sharjah_classes() of table1_criteria_comparison.py,
 and precision and recall come from matrix_scores() of
 class_weight_cascade_check.py.
 
-Run: python3 -W ignore -I -B confusion_matrices.py   (a few seconds)
+Run: python3 -W ignore -I -B analysis/confusion_matrices.py   (a few seconds)
 """
 import argparse
 import importlib.util

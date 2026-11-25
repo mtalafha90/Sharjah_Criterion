@@ -82,7 +82,7 @@ together (1,000 resamples, default_rng(42)), since a lunation can contribute
 records to both subgroups. The difference in majority-class accuracy is given
 alongside, to show how much of an accuracy difference comes from the class mix.
 
-Run: python3 -W ignore subgroup_performance.py   (about ten seconds)
+Run: python3 -W ignore analysis/subgroup_performance.py   (about ten seconds)
 """
 import argparse
 from pathlib import Path

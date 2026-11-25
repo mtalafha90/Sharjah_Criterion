@@ -39,7 +39,7 @@ a clock time there, so the feature table puts every report at local sunset
 mention clock times (of sunset, moonset or the sighting); these are counted
 and printed, but not used.
 
-Run: python3 -W ignore -I -B data_selection_flowchart.py
+Run: python3 -W ignore -I -B analysis/data_selection_flowchart.py
 Output: data_selection_flowchart.png (300 dpi, 6.5 in wide, for \\textwidth)
 """
 import argparse

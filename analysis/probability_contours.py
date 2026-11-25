@@ -57,7 +57,7 @@ Inputs (default paths in this repository):
 The bands come from eq16_class() and the band colours from CLASSES in
 visibility_maps.py.
 
-Run: python3 -W ignore -I -B probability_contours.py   (about 15 s)
+Run: python3 -W ignore -I -B analysis/probability_contours.py   (about 15 s)
 """
 import argparse
 import importlib.util

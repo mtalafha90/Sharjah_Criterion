@@ -20,7 +20,7 @@
 
 Data: data/icop and data/alrefay in this repository, and the HilalPy table (--hilalpy; see
 hilalpy_independent_check.py for where to obtain it).
-Run:  python3 -W ignore minor_statistical_checks.py --hilalpy "Final 30.6.2023.csv"
+Run:  python3 -W ignore analysis/minor_statistical_checks.py --hilalpy "Final 30.6.2023.csv"
 """
 import argparse
 import importlib.util
@@ -144,7 +144,7 @@ def part_b(hilalpy_path):
         print(f"  {name:40s} {n:5d}")
     print(f"  {'not in our ICOP archive':40s} {len(alr_rows):5d}  (removed: {len(alr_icop)})")
     print(f"  {'one row per event and outcome':40s} {len(alr_prim):5d}  classes 0/1/2 = "
-          f"{list(np.bincount(alr_prim['cls'], minlength=3))}")
+          f"{np.bincount(alr_prim['cls'], minlength=3).tolist()}")
     print(f"  merged rows (same evening and outcome, sites within 0.5 deg): {len(alr_rows) - len(alr_prim)}")
 
     # Match the 425 table records with HilalPy's Alrefay rows (same date, within 0.5 deg).

@@ -1,6 +1,7 @@
 # Package versions used for pipeline steps 02-05, the Alrefay comparison and the
 # analysis scripts. Printed by section [0] of:  python3 -W ignore analysis/worked_example.py
-# Python 3.11.17 (CPython), Linux x86_64
+# Python 3.11.17 (CPython), Linux x86_64; the archived data and models were reproduced
+# exactly with Python 3.11.18 in November 2026
 # Install with:  python3 -m pip install -r requirements.txt
 numpy==2.4.6
 pandas==3.0.6

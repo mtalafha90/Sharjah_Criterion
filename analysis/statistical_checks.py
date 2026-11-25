@@ -27,8 +27,9 @@ Inputs (default paths in this repository):
       rows, same order): StratifiedGroupKFold(5, shuffle=True, random_state=42),
       stratified on the three-class label, groups = page_url
   models/stage1_detectability_model.joblib and
-      stage2_naked_eye_model.joblib (final models, fitted on all 4,470 rows),
-      Table_I_positive_observations.csv and Table_II_negative_observations.csv
+      stage2_naked_eye_model.joblib (final models, fitted on all 4,470 rows)
+  data/alrefay/Table_I_positive_observations.csv and
+      Table_II_negative_observations.csv (Alrefay et al. 2018; --alrefay-dir)
 
 Predictors: ARCV = relative_altitude_deg, ARCL = elongation_deg and
 lag = moon_lag_minutes, all at local sunset. Pipeline of both stages: median
@@ -85,7 +86,7 @@ Sections
      outcomes are compared. The check is repeated without the Alrefay records
      that match any ICOP report.
 
-Run: python3 -W ignore statistical_checks.py   (takes a few minutes)
+Run: python3 -W ignore analysis/statistical_checks.py   (takes a few minutes)
 """
 import argparse
 import re

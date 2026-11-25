@@ -82,11 +82,11 @@ python3 pipeline/05_choose_thresholds_and_plot_roc.py
 python3 pipeline/compare_twostep_with_alrefay_rowwise.py
 ```
 
-Steps 02, 03b, 04, 05 and the Alrefay comparison reproduce the archived data, models and reports exactly.
+Steps 02, 03b, 04, 05 and the Alrefay comparison reproduce the archived data, models and reports exactly. To reproduce the paper, skip steps 01 and 03. Step 01 needs `requests` and `beautifulsoup4`, which `requirements.txt` does not install, and it overwrites `data/icop/crescent_observations_raw.csv` with the reports now on the ICOP pages, so the record counts no longer match the paper. Step 03 cannot be run from this repository (see Known issues).
 
 ## Analysis scripts
 
-The scripts in `analysis/` start from the archived files in `data/` and `models/` and print the numbers given in the paper; the figure scripts write to `figures/`. Run them from the repository root, for example `python3 analysis/statistical_checks.py`. Four scripts also need the HilalPy sighting database: the file `Final 30.6.2023.csv` of the Mendeley Data deposit [10.17632/rs994bxgc4.1](https://doi.org/10.17632/rs994bxgc4.1) (CC BY 4.0), passed with `--hilalpy` (or `--input` for `hilalpy_independent_check.py`).
+The scripts in `analysis/` start from the archived files in `data/` and `models/` and print the numbers given in the paper; the figure scripts write to `figures/`. Run them from the repository root, for example `python3 analysis/statistical_checks.py`. The first run of `regional_check.py`, `data_selection_flowchart.py`, `visibility_maps.py` or `graphical_abstract.py` needs internet access, because cartopy then downloads the Natural Earth country borders and coastlines. Four scripts also need the HilalPy sighting database: the file `Final 30.6.2023.csv` of the Mendeley Data deposit [10.17632/rs994bxgc4.1](https://doi.org/10.17632/rs994bxgc4.1) (CC BY 4.0), passed with `--hilalpy` (or `--input` for `hilalpy_independent_check.py`).
 
 | Script | Reproduces |
 |---|---|
@@ -94,12 +94,12 @@ The scripts in `analysis/` start from the archived files in `data/` and `models/
 | `data_attrition_and_negatives.py` | Sections 2.1-2.2: record losses and the meaning of non-sightings |
 | `sky_geometry_schematic.py` | Fig. 2 (sky geometry at sunset) |
 | `threshold_and_calibration_checks.py` | Fig. 6 (calibration by band); threshold choice and error rates |
-| `ordinal_model_comparison.py` | Table 2 (three-class models) |
+| `ordinal_model_comparison.py` | Table 2 (three-class models), except the HilalPy columns, which `hilalpy_independent_check.py` prints in its section [6] |
 | `class_weight_cascade_check.py` | the full cascade and class weights (Section 3.4) |
 | `confusion_matrices.py` | Fig. 7 (confusion matrices) |
 | `probability_contours.py` | Fig. 8 (probability contours) |
 | `statistical_checks.py` | Table 3 (coefficients and intervals), Fig. 9 (precision-recall curves), the Alrefay check (Section 3.8) |
-| `predictor_ablation.py` | Table 4 (predictor ablation) |
+| `predictor_ablation.py` | Table 4 (predictor ablation); run with `data/icop/crescent_features.csv` as argument |
 | `regional_check.py` | Fig. 10 (station map) and the leave-one-region-out test |
 | `observation_time_sensitivity.py`, `subgroup_performance.py` | sensitivity to observation time, region and subgroup (Section 3.6) |
 | `visibility_maps.py` | Figs. 11, 13 and 15 (visibility maps) |
@@ -111,7 +111,7 @@ The scripts in `analysis/` start from the archived files in `data/` and `models/
 | `minor_statistical_checks.py` | the checks of the third review round; needs `--hilalpy` |
 | `worked_example.py` | record counts, final model parameters, a worked example and the package versions |
 
-Fig. 12 is a photograph. The notes at the top of each script name the reviewer comment it answers; some still give the table and figure numbers of earlier versions of the paper, so use the numbers above.
+Figs. 3-5 come from `pipeline/05_choose_thresholds_and_plot_roc.py`, Fig. 12 is a photograph, and Table 1 defines the observed classes and the model categories. The notes at the top of most scripts name the reviewer comment they answer. Some notes, help texts and printed lines still use the table and figure numbers of earlier versions of the paper, and so does the name of `table1_criteria_comparison.py` (Table 1 of the first version is now Table 6), so use the numbers above.
 
 ## Results
 
@@ -140,7 +140,7 @@ External checks with the final models:
 
 ## References
 
-- Alrefay, T. Y., Alsaab, S. A., Alreshidi, A., Alotaibi, H., Alrebdi, H. I., & Alhusari, J. (2018). Analysis of observations of earliest visibility of the lunar crescent. *The Observatory*, **138**, 267-288. [ADS: 2018Obs...138..267A](https://ui.adsabs.harvard.edu/abs/2018Obs...138..267A)
+- Alrefay, T., Alsaab, S., Alshehri, F., Alghamdi, A., Hadadi, A., Alotaibi, M., Almutari, K., & Mubarki, Y. (2018). Analysis of observations of earliest visibility of the lunar crescent. *The Observatory*, **138**, 267-291. [ADS: 2018Obs...138..267A](https://ui.adsabs.harvard.edu/abs/2018Obs...138..267A)
 - Yallop, B. D. (1997). *A method for predicting the first sighting of the new crescent moon*. NAO Technical Note No. 69. HM Nautical Almanac Office, Royal Greenwich Observatory.
 - Fotheringham, J. K. (1910). On the smallest visible phase of the Moon. *Monthly Notices of the Royal Astronomical Society*, **70**(7), 527-531.
 - Maunder, E. W. (1911). On the smallest visible phase of the Moon. *Journal of the British Astronomical Association*, **21**, 355-362.
@@ -166,6 +166,6 @@ BibTeX:
 }
 ```
 
-## License
+## Licence
 
 MIT — see [LICENSE](LICENSE).
